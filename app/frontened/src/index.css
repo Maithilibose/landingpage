@@ -1,0 +1,939 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  AI-ASSISTED HISTORICAL MANUSCRIPT RESTORATION PLATFORM
+
+  Palette: warm parchment foundation, ink-black world, oxblood / terracotta /
+  aged gold / restrained teal as controlled accents.
+*/
+
+@layer base {
+
+  :root {
+
+    /* brand primitives */
+
+    --parchment: #f4efe4;
+
+    --ink: #211e1a;
+
+    --oxblood: #4a2525;
+
+    --terracotta: #8a5a44;
+
+    --gold: #c49a5a;
+
+    --teal: #526b67;
+
+    /* shadcn tokens -> dark archaeological archive surface */
+
+    --background: 36 11% 8%;
+
+    --foreground: 45 33% 92%;
+
+    --card: 36 10% 11%;
+
+    --card-foreground: 45 33% 92%;
+
+    --popover: 36 11% 9%;
+
+    --popover-foreground: 45 33% 92%;
+
+    --primary: 36 40% 62%;
+
+    --primary-foreground: 36 12% 9%;
+
+    --secondary: 36 8% 17%;
+
+    --secondary-foreground: 45 25% 88%;
+
+    --muted: 36 8% 16%;
+
+    --muted-foreground: 40 16% 74%;
+
+    --accent: 168 13% 24%;
+
+    --accent-foreground: 45 30% 92%;
+
+    --destructive: 0 33% 32%;
+
+    --destructive-foreground: 45 33% 94%;
+
+    --border: 36 9% 21%;
+
+    --input: 36 9% 23%;
+
+    --ring: 36 40% 62%;
+
+    --radius: 0.125rem;
+
+    --sidebar-background: 36 11% 9%;
+
+    --sidebar-foreground: 45 25% 88%;
+
+    --sidebar-primary: 36 40% 62%;
+
+    --sidebar-primary-foreground: 36 12% 9%;
+
+    --sidebar-accent: 36 8% 17%;
+
+    --sidebar-border: 36 9% 21%;
+
+    --sidebar-ring: 36 40% 62%;
+
+  }
+
+  html {
+
+    scroll-behavior: smooth;
+
+    background: hsl(var(--background));
+
+    -webkit-text-size-adjust: 100%;
+
+  }
+
+  body {
+
+    background: hsl(var(--background));
+
+    color: hsl(var(--foreground));
+
+    font-family: system-ui, -apple-system, sans-serif;
+
+    font-kerning: normal;
+
+    text-wrap: pretty;
+
+    overflow-x: hidden;
+
+    letter-spacing: 0.01em;
+
+  }
+
+  h1,
+
+  h2,
+
+  h3 {
+
+    font-family: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
+
+    text-wrap: balance;
+
+  }
+
+  ::selection {
+
+    background: rgba(196, 154, 90, 0.32);
+
+    color: var(--parchment);
+
+  }
+
+}
+
+@layer utilities {
+
+  .font-display {
+
+    font-family: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
+
+  }
+
+  .font-odia {
+
+    font-family: 'Noto Serif Oriya', 'Noto Serif Odia', serif;
+
+  }
+
+  .font-urdu {
+
+    font-family: 'Noto Nastaliq Urdu', serif;
+
+  }
+
+  .text-parchment {
+
+    color: var(--parchment);
+
+  }
+
+  .text-gold {
+
+    color: var(--gold);
+
+  }
+
+  .text-teal-muted {
+
+    color: var(--teal);
+
+  }
+
+  .bg-ink {
+
+    background-color: var(--ink);
+
+  }
+
+  /* hairline rules read as archive index lines, not as UI chrome */
+
+  .rule-gold {
+
+    background: linear-gradient(
+
+      90deg,
+
+      rgba(196, 154, 90, 0) 0%,
+
+      rgba(196, 154, 90, 0.55) 22%,
+
+      rgba(196, 154, 90, 0.55) 78%,
+
+      rgba(196, 154, 90, 0) 100%
+
+    );
+
+  }
+
+  .eyebrow {
+
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+
+      'Segoe UI', sans-serif;
+
+    font-size: 0.6875rem;
+
+    line-height: 1.2;
+
+    letter-spacing: 0.34em;
+
+    text-transform: uppercase;
+
+    color: rgba(216, 176, 112, 0.96);
+
+  }
+
+  /* cinematic legibility over footage without covering the manuscript */
+
+  .scrim-bottom {
+
+    background: linear-gradient(
+
+      to top,
+
+      rgba(14, 12, 10, 0.94) 0%,
+
+      rgba(14, 12, 10, 0.7) 42%,
+
+      rgba(14, 12, 10, 0.28) 78%,
+
+      rgba(14, 12, 10, 0) 100%
+
+    );
+
+  }
+
+  .scrim-left {
+
+    background: linear-gradient(
+
+      100deg,
+
+      rgba(14, 12, 10, 0.92) 0%,
+
+      rgba(14, 12, 10, 0.58) 38%,
+
+      rgba(14, 12, 10, 0.18) 66%,
+
+      rgba(14, 12, 10, 0) 100%
+
+    );
+
+  }
+
+  .panel {
+
+    background: rgba(20, 18, 15, 0.86);
+
+    border: 1px solid rgba(196, 154, 90, 0.26);
+
+    backdrop-filter: blur(7px);
+
+  }
+
+  /* Legibility floor: copy sits over live footage, so the two smallest text
+
+     steps are lifted globally instead of per-section. Declared after the
+
+     Tailwind utilities, so it wins on source order. */
+
+  .text-xs {
+
+    font-size: 0.8125rem;
+
+    line-height: 1.55;
+
+  }
+
+  .text-sm {
+
+    font-size: 0.9375rem;
+
+    line-height: 1.7;
+
+  }
+
+  .vignette::after {
+
+    content: '';
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background: radial-gradient(
+
+      120% 90% at 50% 45%,
+
+      rgba(0, 0, 0, 0) 45%,
+
+      rgba(10, 9, 8, 0.55) 100%
+
+    );
+
+  }
+
+}
+
+/* film letterbox bars + light sweep used by the scene transitions */
+
+.cine-bar {
+
+  position: fixed;
+
+  left: 0;
+
+  right: 0;
+
+  height: clamp(18px, 3.2vh, 42px);
+
+  background: #0d0c0a;
+
+  z-index: 40;
+
+  pointer-events: none;
+
+  transition: opacity 900ms cubic-bezier(0.25, 1, 0.5, 1);
+
+}
+
+.cine-bar-top {
+
+  top: 0;
+
+}
+
+.cine-bar-bottom {
+
+  bottom: 0;
+
+}
+
+@keyframes sweep-across {
+
+  0% {
+
+    transform: translateX(-120%) skewX(-8deg);
+
+    opacity: 0;
+
+  }
+
+  35% {
+
+    opacity: 0.9;
+
+  }
+
+  100% {
+
+    transform: translateX(120%) skewX(-8deg);
+
+    opacity: 0;
+
+  }
+
+}
+
+@keyframes scan-down {
+
+  0% {
+
+    transform: translateY(-100%);
+
+    opacity: 0;
+
+  }
+
+  20% {
+
+    opacity: 1;
+
+  }
+
+  100% {
+
+    transform: translateY(320%);
+
+    opacity: 0;
+
+  }
+
+}
+
+@keyframes drift-fade {
+
+  0%,
+
+  100% {
+
+    opacity: 0.35;
+
+  }
+
+  50% {
+
+    opacity: 0.85;
+
+  }
+
+}
+
+@keyframes dash-flow {
+
+  to {
+
+    stroke-dashoffset: -240;
+
+  }
+
+}
+
+.reveal {
+
+  opacity: 0;
+
+  transform: translateY(28px);
+
+  transition:
+
+    opacity 1100ms cubic-bezier(0.25, 1, 0.5, 1),
+
+    transform 1100ms cubic-bezier(0.25, 1, 0.5, 1);
+
+}
+
+.reveal-in {
+
+  opacity: 1;
+
+  transform: translateY(0);
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+
+    scroll-behavior: auto;
+
+  }
+
+  .reveal {
+
+    opacity: 1;
+
+    transform: none;
+
+    transition: none;
+
+  }
+
+  .cine-bar {
+
+    opacity: 0;
+
+  }
+
+}
+
+
+/* ============================================================
+   MANUSCRIPT 3D / MOUSE PARALLAX HERO
+   ============================================================ */
+
+/*
+  This section is NEW.
+
+  It does not modify the existing design system above.
+
+  The hero is built as layered 2.5D depth:
+  
+  BACKGROUND
+      ↓
+  VIDEO
+      ↓
+  ATMOSPHERE
+      ↓
+  FOREGROUND
+      ↓
+  TEXT / UI
+*/
+
+
+.manuscript-hero {
+
+  --mouse-x: 0;
+  --mouse-y: 0;
+
+  position: relative;
+
+  width: 100%;
+  height: 100vh;
+  min-height: 700px;
+
+  overflow: hidden;
+
+  perspective: 1200px;
+
+  background: #0d0c0a;
+
+  isolation: isolate;
+
+}
+
+
+/* ------------------------------------------------------------
+   DEPTH LAYERS
+   ------------------------------------------------------------ */
+
+.hero-depth {
+
+  position: absolute;
+
+  inset: -4%;
+
+  transform-style: preserve-3d;
+
+  will-change: transform;
+
+  transition:
+    transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+
+}
+
+
+/* Furthest background layer */
+
+.hero-depth-back {
+
+  transform:
+    translate3d(
+      calc(var(--mouse-x) * -5px),
+      calc(var(--mouse-y) * -3px),
+      -40px
+    )
+    scale(1.06);
+
+}
+
+
+/* Main video layer */
+
+.hero-video-layer {
+
+  transform:
+    translate3d(
+      calc(var(--mouse-x) * -14px),
+      calc(var(--mouse-y) * -9px),
+      0
+    )
+    scale(1.08);
+
+}
+
+
+/* Atmospheric layer */
+
+.hero-atmosphere {
+
+  pointer-events: none;
+
+  transform:
+    translate3d(
+      calc(var(--mouse-x) * 20px),
+      calc(var(--mouse-y) * 14px),
+      40px
+    );
+
+}
+
+
+/* Foreground layer */
+
+.hero-foreground {
+
+  pointer-events: none;
+
+  transform:
+    translate3d(
+      calc(var(--mouse-x) * 28px),
+      calc(var(--mouse-y) * 18px),
+      80px
+    );
+
+}
+
+
+/* ------------------------------------------------------------
+   VIDEO
+   ------------------------------------------------------------ */
+
+.hero-video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+
+/* ------------------------------------------------------------
+   CINEMATIC VIGNETTE
+   ------------------------------------------------------------ */
+
+.hero-vignette {
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 35%,
+      rgba(0, 0, 0, 0.72) 100%
+    );
+
+}
+
+
+/* ------------------------------------------------------------
+   ATMOSPHERIC LIGHT
+   ------------------------------------------------------------ */
+
+.hero-light {
+
+  position: absolute;
+
+  width: 55%;
+  height: 55%;
+
+  top: 5%;
+  right: 5%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(196, 154, 90, 0.14),
+      transparent 70%
+    );
+
+  filter: blur(30px);
+
+}
+
+
+/* ------------------------------------------------------------
+   SUBTLE DIGITAL GRID
+   ------------------------------------------------------------ */
+
+.hero-grid {
+
+  position: absolute;
+
+  inset: 0;
+
+  opacity: 0.08;
+
+  background-image:
+    linear-gradient(
+      rgba(196, 154, 90, 0.2) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(196, 154, 90, 0.2) 1px,
+      transparent 1px
+    );
+
+  background-size: 80px 80px;
+
+  mask-image:
+    radial-gradient(
+      circle at center,
+      black,
+      transparent 75%
+    );
+
+}
+
+
+/* ------------------------------------------------------------
+   HERO CONTENT
+   ------------------------------------------------------------ */
+
+.hero-content {
+
+  position: relative;
+
+  z-index: 10;
+
+  width: min(680px, 90%);
+
+  padding-top: 20vh;
+
+  margin-left: 8vw;
+
+  transform:
+    translate3d(
+      calc(var(--mouse-x) * 6px),
+      calc(var(--mouse-y) * 4px),
+      100px
+    );
+
+  transition:
+    transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
+
+}
+
+
+/* Small heading above the main title */
+
+.hero-eyebrow {
+
+  margin-bottom: 20px;
+
+  font-size: 11px;
+
+  letter-spacing: 0.3em;
+
+  text-transform: uppercase;
+
+  color: rgba(216, 176, 112, 0.95);
+
+}
+
+
+/* Main hero heading */
+
+.hero-content h1 {
+
+  margin: 0;
+
+  font-family:
+    "Cormorant Garamond",
+    "Iowan Old Style",
+    Georgia,
+    serif;
+
+  font-size: clamp(3.5rem, 7vw, 7rem);
+
+  line-height: 0.9;
+
+  font-weight: 500;
+
+  color: #f4efe4;
+
+}
+
+
+/* Hero description */
+
+.hero-description {
+
+  max-width: 520px;
+
+  margin-top: 30px;
+
+  font-size: 1rem;
+
+  line-height: 1.7;
+
+  color: rgba(244, 239, 228, 0.72);
+
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE / SMALL SCREENS
+   ------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+
+  .manuscript-hero {
+
+    min-height: 650px;
+
+  }
+
+  .hero-content {
+
+    width: 88%;
+
+    margin-left: 6vw;
+
+    padding-top: 25vh;
+
+  }
+
+  .hero-content h1 {
+
+    font-size: clamp(3rem, 13vw, 5rem);
+
+  }
+
+  /*
+    Reduce the parallax on smaller screens so the composition
+    remains stable and does not feel excessive.
+  */
+
+  .hero-depth-back {
+
+    transform: scale(1.04);
+
+  }
+
+  .hero-video-layer {
+
+    transform: scale(1.05);
+
+  }
+
+}
+
+
+/* ------------------------------------------------------------
+   REDUCED MOTION
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .hero-depth,
+  .hero-content {
+
+    transform: none !important;
+
+    transition: none !important;
+
+  }
+
+  .manuscript-hero {
+  position: relative !important;
+  width: 100% !important;
+  height: 100vh !important;
+  min-height: 700px !important;
+  overflow: hidden !important;
+  background: black !important;
+}
+
+/* .hero-video-layer {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 10 !important;
+  transform: none !important;
+} */
+
+.hero-video {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  opacity: 1 !important;
+  display: block !important;
+  z-index: 20 !important;
+}
+
+/* .hero-depth-back,
+.hero-atmosphere,
+.hero-foreground {
+  display: none !important;
+} */
+
+.manuscript-hero-fixed {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  z-index: 0 !important;
+  pointer-events: auto;
+}
+
+.manuscript-hero-fixed .hero-video-layer {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1 !important;
+}
+
+.manuscript-hero-fixed .hero-video {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+
+.manuscript-hero {
+  position: relative !important;
+  width: 100% !important;
+  height: 100vh !important;
+  min-height: 700px !important;
+  overflow: hidden !important;
+  background: black !important;
+}
+
+.hero-video-layer {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 10 !important;
+  transform: none !important;
+}
+
+.hero-video {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  opacity: 1 !important;
+  display: block !important;
+  z-index: 20 !important;
+}
+
+.hero-depth-back,
+.hero-atmosphere,
+.hero-foreground {
+  display: none !important;
+}}
