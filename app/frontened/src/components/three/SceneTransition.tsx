@@ -3,7 +3,7 @@ import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { transitionBands, videoStations } from '../../data/manuscriptSnenes';
 import { clamp01, scrollStore } from '../../lib/scrollStore';
-import { glowTexture, gridTexture } from './textureUtils';
+import { glowTexture, gridTexture } from './TextureUtils';
 
 /**
  * Cinematic bridges between the four videos. Instead of hard cuts, each handover

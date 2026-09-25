@@ -23,10 +23,9 @@
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": false,
 
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./app/frontened/src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["app/frontened/src"]
 }

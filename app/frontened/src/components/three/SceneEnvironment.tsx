@@ -2,7 +2,7 @@ import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import type { Tier } from '../../lib/scrollStore';
-import { dustTexture } from './textureUtils';
+import { dustTexture } from './TextureUtils';
 
 /** deterministic pseudo random so the environment is stable across renders */
 function seeded(seed: number) {

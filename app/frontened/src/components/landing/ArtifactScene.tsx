@@ -2,8 +2,8 @@ import { useSectionReveal } from '../../lib/acts';
 import SceneLabel from './SceneLabel';
 
 /**
- * ACT I.b — THE ARTIFACT.
- * The camera closes on the manuscript behind; copy sits to the right.
+ * ACT I — THE PHYSICAL ARTIFACT.
+ * Grounding the entire journey in the tactile reality of the surviving object.
  */
 export default function ArtifactScene() {
   const { ref, inView } = useSectionReveal<HTMLElement>();
@@ -13,30 +13,39 @@ export default function ArtifactScene() {
       id="artifact"
       ref={ref}
       className="relative z-20 flex min-h-screen items-center overflow-hidden px-5 py-[16vh] md:px-12 lg:px-20"
-      aria-label="The artifact"
+      aria-label="The physical artifact"
     >
-      <div className="scrim-left absolute inset-y-0 right-0 w-[78%] -scale-x-100 md:w-[62%]" aria-hidden="true" />
+      {/* Soft side scrim - seamless gradient */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-l from-[#0c0b09]/95 via-[#0c0b09]/75 to-transparent md:w-[70%] ml-auto"
+        aria-hidden="true"
+      />
 
-      <div className={`reveal ${inView ? 'reveal-in' : ''} relative ml-auto w-full max-w-md lg:max-w-lg`}>
-        <SceneLabel index="I" label="Artifact" align="right" />
+      <div className={`reveal ${inView ? 'reveal-in' : ''} panel-25d p-6 md:p-8 rounded-sm border border-white/8 bg-[#12100d]/80 relative ml-auto w-full max-w-md lg:max-w-lg`}>
+        <SceneLabel index="I" label="The Artifact" align="right" />
         <h2 className="mt-6 font-display text-[clamp(1.7rem,3.6vw,2.9rem)] font-medium leading-[1.06] text-parchment">
-          A physical object,
+          A physical survivor,
           <br />
-          <span className="italic text-gold">recovered from context.</span>
+          <span className="italic text-gold">shaped by centuries.</span>
         </h2>
-        <p className="mt-5 text-sm leading-relaxed text-parchment/70 md:text-[0.9375rem]">
-          Every page begins as an object: leaf and fibre, iron gall and soot, broken by
-          water, insects and time. Nothing is interpreted before it is documented — the
-          platform starts where the archaeologist starts, by looking carefully.
+        <p className="mt-4 text-sm leading-relaxed text-parchment/75 md:text-[0.9375rem]">
+          Before it is a historical text, every manuscript is a fragile material object:
+          dried palm leaf, Himalayan birch bark, or handmade rag paper, inscribed with carbon soot
+          or acidic iron gall ink that slowly eats through its own fibers over time.
         </p>
-        <ul className="mt-7 space-y-3 border-l border-[#c49a5a]/25 pl-5">
+        <p className="mt-3 text-sm leading-relaxed text-parchment/65">
+          Nothing is enhanced before it is fully documented. The system starts where the
+          conservator starts: by looking carefully at the physical substrate without altering it.
+        </p>
+
+        <ul className="mt-7 space-y-3 border-l border-[#c49a5a]/25 pl-4">
           {[
-            'In-situ condition recorded before any enhancement',
-            'Original layer always retained, never overwritten',
-            'Environment, damage and hand identified separately',
+            'In-situ condition recorded before any processing begins',
+            'Original high-resolution layer permanently preserved',
+            'Material fibers, ink chemistry, and physical decay evaluated separately',
           ].map((t) => (
-            <li key={t} className="flex gap-3 text-[0.8125rem] leading-relaxed text-muted-foreground">
-              <span className="mt-[0.55rem] h-px w-4 shrink-0 bg-[#c49a5a]/50" aria-hidden="true" />
+            <li key={t} className="flex gap-2.5 text-[0.8125rem] leading-relaxed text-muted-foreground">
+              <span className="mt-[0.55rem] h-1.5 w-1.5 rounded-full bg-gold/60 shrink-0" aria-hidden="true" />
               {t}
             </li>
           ))}

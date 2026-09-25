@@ -429,13 +429,13 @@
 
   opacity: 0;
 
-  transform: translateY(28px);
+  transform: translateY(14px);
 
   transition:
 
-    opacity 1100ms cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 1000ms cubic-bezier(0.16, 1, 0.3, 1),
 
-    transform 1100ms cubic-bezier(0.25, 1, 0.5, 1);
+    transform 1000ms cubic-bezier(0.16, 1, 0.3, 1);
 
 }
 
@@ -498,140 +498,246 @@
 
 
 .manuscript-hero {
-
-  --mouse-x: 0;
-  --mouse-y: 0;
-
-  position: relative;
-
-  width: 100%;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
   height: 100vh;
-  min-height: 700px;
-
   overflow: hidden;
-
-  perspective: 1200px;
-
-  background: #0d0c0a;
-
+  background: #0c0b09;
+  z-index: 0;
+  pointer-events: none;
   isolation: isolate;
-
 }
 
-
 /* ------------------------------------------------------------
-   DEPTH LAYERS
+   GROUNDED BACKGROUND LAYERS (FLAT, STABLE, CLEAN)
    ------------------------------------------------------------ */
 
 .hero-depth {
-
   position: absolute;
-
-  inset: -4%;
-
-  transform-style: preserve-3d;
-
-  will-change: transform;
-
-  transition:
-    transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
-
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
-
-/* Furthest background layer */
-
+/* Background overlay layer */
 .hero-depth-back {
-
-  transform:
-    translate3d(
-      calc(var(--mouse-x) * -5px),
-      calc(var(--mouse-y) * -3px),
-      -40px
-    )
-    scale(1.06);
-
+  z-index: 2;
 }
 
-
-/* Main video layer */
-
+/* Background video layer */
 .hero-video-layer {
-
-  transform:
-    translate3d(
-      calc(var(--mouse-x) * -14px),
-      calc(var(--mouse-y) * -9px),
-      0
-    )
-    scale(1.08);
-
+  z-index: 1;
 }
 
-
-/* Atmospheric layer */
-
+/* Atmosphere layer */
 .hero-atmosphere {
-
+  z-index: 3;
   pointer-events: none;
-
-  transform:
-    translate3d(
-      calc(var(--mouse-x) * 20px),
-      calc(var(--mouse-y) * 14px),
-      40px
-    );
-
 }
 
-
-/* Foreground layer */
-
+/* Foreground atmospheric container */
 .hero-foreground {
-
+  z-index: 4;
   pointer-events: none;
-
-  transform:
-    translate3d(
-      calc(var(--mouse-x) * 28px),
-      calc(var(--mouse-y) * 18px),
-      80px
-    );
-
 }
-
 
 /* ------------------------------------------------------------
-   VIDEO
+   STABLE FOREGROUND CONTENT & UI
+   All components remain grounded and stable on scroll.
+   ------------------------------------------------------------ */
+
+.parallax-btn,
+.parallax-nav,
+button.parallax-btn,
+.hero-audio-toggle,
+.top-nav-btn,
+.parallax-headline,
+.hero-headline,
+h1.font-display,
+.hero-content h1,
+.parallax-copy,
+.hero-copy,
+.main-parallax-content h2,
+.main-parallax-content h3,
+.main-parallax-content > section > div > p,
+.panel,
+.parallax-mid,
+.evidence-card,
+.abstention-card,
+.parallax-deco,
+.confidence-badge,
+.scene-label,
+.rule-gold,
+.parallax-eyebrow,
+.eyebrow {
+  transform: none;
+}
+
+/* ------------------------------------------------------------
+   SUBTLE 2.5D HOVER FOR ALL OTHER SECTIONS (ACTS II–VII)
+   Restrained, grounded physical depth:
+   - 5–8px upward lift (translate3d)
+   - subtle Z-depth shift
+   - little or no rotation (0° to preserve legibility)
+   - soft diffused archival shadow
+   - smooth easing without any layout shifts
+   ------------------------------------------------------------ */
+
+.panel,
+.panel-25d,
+.evidence-card,
+.abstention-card,
+.interactive-tile,
+.stage-card {
+  position: relative;
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 400ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 300ms ease,
+              background-color 300ms ease;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  box-shadow: 0 4px 14px -3px rgba(10, 8, 6, 0.30), 0 10px 24px -6px rgba(10, 8, 6, 0.20);
+}
+
+.panel:hover,
+.panel-25d:hover,
+.evidence-card:hover,
+.abstention-card:hover,
+.interactive-tile:hover,
+.stage-card:hover {
+  transform: translate3d(0, -6px, 10px);
+  box-shadow: 0 8px 22px -4px rgba(10, 8, 6, 0.44), 0 20px 40px -6px rgba(10, 8, 6, 0.30), 0 0 1px rgba(196, 154, 90, 0.32);
+  border-color: rgba(196, 154, 90, 0.45);
+}
+
+/* Text readability enhancements over luminous manuscript footage */
+h1, h2, h3, .font-display, .hero-content h1 {
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.90), 0 1px 4px rgba(0, 0, 0, 0.98);
+}
+
+.eyebrow {
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.95);
+}
+
+/* ------------------------------------------------------------
+   VIDEO — LUMINOUS ARCHIVAL MANUSCRIPT (56% OPACITY)
+   Framing and aspect-ratio tuned to cleanly crop watermark & credits
+   outside the viewport, while rendering with sharp hardware contrast.
    ------------------------------------------------------------ */
 
 .hero-video {
   position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;
+  object-position: 30% 20%;
+  transform: scale(1.22) translateZ(0);
+  transform-origin: 12% 16%;
   display: block;
+  opacity: 0.76;
+  filter: brightness(0.98) contrast(1.08) saturate(1.06);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
+/* ------------------------------------------------------------
+   SUBTLE FLOATING TOOLS (HERO / ARCHIVAL ANALYSIS ENVIRONMENT)
+   Gentle floating motion, subtle depth, calm editorial feeling.
+   Slow, gentle, imperceptible idle breathing (4–6px amplitude).
+   ------------------------------------------------------------ */
+
+@keyframes tool-float-slow-1 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes tool-float-slow-2 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@keyframes tool-float-slow-3 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes tool-float-slow-4 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.floating-tool-1 {
+  animation: tool-float-slow-1 8.2s ease-in-out infinite;
+}
+
+.floating-tool-2 {
+  animation: tool-float-slow-2 9.4s ease-in-out infinite;
+}
+
+.floating-tool-3 {
+  animation: tool-float-slow-3 8.8s ease-in-out infinite;
+}
+
+.floating-tool-4 {
+  animation: tool-float-slow-4 10.2s ease-in-out infinite;
+}
 
 /* ------------------------------------------------------------
-   CINEMATIC VIGNETTE
+   LIGHTER CINEMATIC VIGNETTE & SCRIM
+   Preserves vibrant manuscript warmth while feathering edges.
    ------------------------------------------------------------ */
 
 .hero-vignette {
-
   position: absolute;
-
   inset: 0;
-
   background:
     radial-gradient(
-      circle at center,
-      transparent 35%,
-      rgba(0, 0, 0, 0.72) 100%
+      ellipse 95% 85% at 50% 50%,
+      rgba(12, 11, 9, 0.02) 0%,
+      rgba(12, 11, 9, 0.22) 60%,
+      rgba(12, 11, 9, 0.72) 100%
     );
+  pointer-events: none;
+}
 
+.hero-cinematic-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12, 11, 9, 0.28) 0%,
+      rgba(12, 11, 9, 0.04) 30%,
+      rgba(12, 11, 9, 0.08) 70%,
+      rgba(12, 11, 9, 0.48) 100%
+    );
+  pointer-events: none;
+}
+
+.hero-audio-toggle {
+  pointer-events: auto !important;
 }
 
 
@@ -662,37 +768,11 @@
 
 
 /* ------------------------------------------------------------
-   SUBTLE DIGITAL GRID
+   SUBTLE DIGITAL GRID (DISABLED TO ENSURE PRISTINE UNINTERRUPTED VIDEO)
    ------------------------------------------------------------ */
 
 .hero-grid {
-
-  position: absolute;
-
-  inset: 0;
-
-  opacity: 0.08;
-
-  background-image:
-    linear-gradient(
-      rgba(196, 154, 90, 0.2) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(196, 154, 90, 0.2) 1px,
-      transparent 1px
-    );
-
-  background-size: 80px 80px;
-
-  mask-image:
-    radial-gradient(
-      circle at center,
-      black,
-      transparent 75%
-    );
-
+  display: none !important;
 }
 
 
@@ -701,27 +781,12 @@
    ------------------------------------------------------------ */
 
 .hero-content {
-
   position: relative;
-
   z-index: 10;
-
   width: min(680px, 90%);
-
   padding-top: 20vh;
-
   margin-left: 8vw;
-
-  transform:
-    translate3d(
-      calc(var(--mouse-x) * 6px),
-      calc(var(--mouse-y) * 4px),
-      100px
-    );
-
-  transition:
-    transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
-
+  transform: none;
 }
 
 
@@ -810,130 +875,108 @@
 
   }
 
-  /*
-    Reduce the parallax on smaller screens so the composition
-    remains stable and does not feel excessive.
-  */
-
-  .hero-depth-back {
-
-    transform: scale(1.04);
-
+  .hero-depth,
+  .main-parallax-content,
+  .panel,
+  .parallax-mid,
+  .evidence-card,
+  .abstention-card,
+  .confidence-badge,
+  .scene-label,
+  .parallax-deco,
+  .rule-gold,
+  .parallax-btn,
+  .parallax-nav,
+  .parallax-headline,
+  .parallax-copy,
+  .parallax-eyebrow,
+  .eyebrow,
+  h1.font-display {
+    transform: none !important;
+    will-change: auto !important;
   }
 
   .hero-video-layer {
-
-    transform: scale(1.05);
-
+    transform: none !important;
   }
 
+  .hero-video {
+    opacity: 0.70 !important;
+  }
 }
 
+@media (pointer: coarse) {
+  .hero-depth,
+  .main-parallax-content,
+  .panel,
+  .parallax-mid,
+  .evidence-card,
+  .abstention-card,
+  .confidence-badge,
+  .scene-label,
+  .parallax-deco,
+  .rule-gold,
+  .parallax-btn,
+  .parallax-nav,
+  .parallax-headline,
+  .parallax-copy,
+  .parallax-eyebrow,
+  .eyebrow,
+  h1.font-display,
+  .panel-25d,
+  .interactive-tile,
+  .stage-card {
+    transform: none !important;
+    will-change: auto !important;
+  }
 
-/* ------------------------------------------------------------
-   REDUCED MOTION
-   ------------------------------------------------------------ */
+  .panel:hover,
+  .panel-25d:hover,
+  .evidence-card:hover,
+  .abstention-card:hover,
+  .interactive-tile:hover,
+  .stage-card:hover {
+    transform: none !important;
+  }
+
+  .hero-video-layer {
+    transform: none !important;
+  }
+
+  .hero-video {
+    opacity: 0.70 !important;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
-
   .hero-depth,
-  .hero-content {
-
+  .hero-content,
+  .main-parallax-content,
+  .panel,
+  .panel-25d,
+  .interactive-tile,
+  .stage-card,
+  .parallax-mid,
+  .evidence-card,
+  .abstention-card,
+  .confidence-badge,
+  .scene-label,
+  .parallax-deco,
+  .rule-gold,
+  .parallax-btn,
+  .parallax-nav,
+  .parallax-headline,
+  .parallax-copy,
+  .parallax-eyebrow,
+  .eyebrow,
+  h1.font-display,
+  .floating-tool-1,
+  .floating-tool-2,
+  .floating-tool-3,
+  .floating-tool-4 {
     transform: none !important;
-
+    animation: none !important;
     transition: none !important;
-
+    will-change: auto !important;
   }
-
-  .manuscript-hero {
-  position: relative !important;
-  width: 100% !important;
-  height: 100vh !important;
-  min-height: 700px !important;
-  overflow: hidden !important;
-  background: black !important;
 }
-
-/* .hero-video-layer {
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 10 !important;
-  transform: none !important;
-} */
-
-.hero-video {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  opacity: 1 !important;
-  display: block !important;
-  z-index: 20 !important;
-}
-
-/* .hero-depth-back,
-.hero-atmosphere,
-.hero-foreground {
-  display: none !important;
-} */
-
-.manuscript-hero-fixed {
-  position: fixed !important;
-  inset: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  min-height: 100vh !important;
-  z-index: 0 !important;
-  pointer-events: auto;
-}
-
-.manuscript-hero-fixed .hero-video-layer {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  z-index: 1 !important;
-}
-
-.manuscript-hero-fixed .hero-video {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-}
-
-
-.manuscript-hero {
-  position: relative !important;
-  width: 100% !important;
-  height: 100vh !important;
-  min-height: 700px !important;
-  overflow: hidden !important;
-  background: black !important;
-}
-
-.hero-video-layer {
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 10 !important;
-  transform: none !important;
-}
-
-.hero-video {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  opacity: 1 !important;
-  display: block !important;
-  z-index: 20 !important;
-}
-
-.hero-depth-back,
-.hero-atmosphere,
-.hero-foreground {
-  display: none !important;
-}}

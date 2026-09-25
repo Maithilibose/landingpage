@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { manuscriptScenes, scenePosters, type VideoStation } from '../../data/manuscriptSnenes';
 import { scrollStore } from '../../lib/scrollStore';
-import { glowTexture, labelTexture } from './textureUtils';
+import { glowTexture, labelTexture } from './TextureUtils';
 
 const GOLD_RGB: [number, number, number] = [196, 154, 90];
 const TEAL_RGB: [number, number, number] = [110, 143, 137];
@@ -51,6 +51,11 @@ export default function VideoPlane({ station }: Props) {
         loaded.dispose();
         return;
       }
+      // Calibrated framing to crop out Google Flow bottom-right corner watermark
+      loaded.wrapS = THREE.ClampToEdgeWrapping;
+      loaded.wrapT = THREE.ClampToEdgeWrapping;
+      loaded.repeat.set(0.92, 0.88);
+      loaded.offset.set(0.04, 0.10);
       setPosterTex(loaded);
     });
     tex.colorSpace = THREE.SRGBColorSpace;
@@ -64,20 +69,28 @@ export default function VideoPlane({ station }: Props) {
 
   useEffect(() => {
     const el = document.createElement('video');
-    el.src = manuscriptScenes[station.id];
+    el.src = encodeURI(manuscriptScenes[station.id]);
     el.loop = true;
     el.muted = true;
     el.playsInline = true;
     el.preload = 'none';
     const onReady = () => setVideoReady(true);
+    const onError = () => setVideoReady(false);
     el.addEventListener('loadeddata', onReady);
+    el.addEventListener('error', onError);
     const tex = new THREE.VideoTexture(el);
     tex.colorSpace = THREE.SRGBColorSpace;
     tex.minFilter = THREE.LinearFilter;
     tex.magFilter = THREE.LinearFilter;
+    // Calibrated framing to crop out Google Flow bottom-right corner watermark
+    tex.wrapS = THREE.ClampToEdgeWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    tex.repeat.set(0.92, 0.88);
+    tex.offset.set(0.04, 0.10);
     setMedia({ el, tex });
     return () => {
       el.removeEventListener('loadeddata', onReady);
+      el.removeEventListener('error', onError);
       el.pause();
       el.removeAttribute('src');
       el.load();

@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 
 export const actIds = [
   'hero',
+  'introduction',
   'artifact',
   'restoration',
   'script',

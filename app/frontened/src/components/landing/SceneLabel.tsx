@@ -1,8 +1,8 @@
 import { useReveal } from '../../lib/scrollStore';
 
 /**
- * Reusable spatial label: roman numeral, hairline rule and act name.
- * Anchors each stage of the journey without covering the footage.
+ * Reusable spatial label: roman numeral, subtle accent point, and act name.
+ * Anchors each stage of the journey cleanly without creating unwanted horizontal rule lines across footage.
  */
 export default function SceneLabel({
   index,
@@ -17,19 +17,16 @@ export default function SceneLabel({
   return (
     <div
       ref={ref}
-      className={`reveal ${inView ? 'reveal-in' : ''} flex items-center gap-4 ${
+      className={`reveal ${inView ? 'reveal-in' : ''} flex items-center gap-3 ${
         align === 'right' ? 'flex-row-reverse' : ''
       }`}
     >
       {index ? (
-        <>
-          <span className="font-display text-3xl italic leading-none text-gold md:text-4xl">
-            {index}
-          </span>
-          <span className="h-px w-8 rule-gold" aria-hidden="true" />
-        </>
+        <span className="font-display text-2xl italic leading-none text-gold md:text-3xl">
+          {index}
+        </span>
       ) : null}
-      <span className="h-px w-6 rule-gold" aria-hidden="true" />
+      <span className="h-1 w-1 rounded-full bg-gold/60" aria-hidden="true" />
       <span className="eyebrow">{label}</span>
     </div>
   );

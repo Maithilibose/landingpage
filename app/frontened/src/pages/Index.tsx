@@ -1,53 +1,47 @@
 import { useEffect, useState } from 'react';
-import ManuscriptHero3D from "../components/landing/ManuscriptHero3D";
+import ManuscriptHero3D from '../components/landing/ManuscriptHero3D';
 import AnalysisScene from '../components/landing/AnalysisScene';
 import ArtifactScene from '../components/landing/ArtifactScene';
-import FinalCtaScene from '../components/landing/FinalCtaScene';
 import HeroScene from '../components/landing/HeroScene';
+import IntroductionScene from '../components/landing/IntroductionScene';
 import InterpretationScene from '../components/landing/InterpretationScene';
 import ProcessScene from '../components/landing/ProcessScene';
 import ReconstructionScene from '../components/landing/ReconstructionScene';
 import RestorationScene from '../components/landing/Restoration';
 import ScriptScene from '../components/landing/ScriptScene';
 import TranscriptionScene from '../components/landing/TranscriptionScene';
-import UncertaintyScene from '../components/landing/UncertanityScene';
 
 import Footer from '../components/Layout/Footer';
 import TopNav from '../components/Layout/TopNav';
 
-import LandingCanvas from '../components/three/LandingCanvas';
-
-import { manuscriptScenes, scenePosters, videoStations } from '../data/manuscriptSnenes';
-
 import { useActiveAct, type ActId } from '../lib/acts';
-
 import {
   goToSection,
   scrollStore,
-  supportsWebGL,
   useJourneyScroll,
-  useQualityTier,
 } from '../lib/scrollStore';
+
 /**
- * PALIMPSEST — a single continuous scroll journey.
+ * PALIMPSEST — ARCHIVAL MANUSCRIPT RESTORATION
  *
- * One fixed WebGL world (the four supplied videos as media planes in a
- * corridor) sits behind the page. The acts themselves are full-height sections
- * in NORMAL document flow, so the story is always readable — and their shared
- * scroll position is what drives the camera. Footage and copy can never drift
- * apart because they are driven by the same number.
+ * A continuous, editorial scroll journey. The authentic cinematic manuscript
+ * video remains visually flat, grounded, and stable behind the document flow.
+ * Each section appears exactly once, progressing with intentional human pacing
+ * from the opening interactive workbench through physical recovery and critical
+ * palaeographic interpretation.
  */
 
 const rail: { id: ActId; label: string }[] = [
-  { id: 'artifact', label: 'Discovery' },
+  { id: 'hero', label: 'Upload' },
+  { id: 'introduction', label: 'Manuscript' },
+  { id: 'artifact', label: 'Artifact' },
   { id: 'restoration', label: 'Restoration' },
   { id: 'script', label: 'Script' },
   { id: 'analysis', label: 'Analysis' },
   { id: 'transcription', label: 'Transcription' },
-  { id: 'reconstruction', label: 'Reconstruction' },
-  { id: 'uncertainty', label: 'Uncertainty' },
+  { id: 'reconstruction', label: 'Verification' },
   { id: 'interpretation', label: 'Interpretation' },
-  { id: 'process', label: 'Process' },
+  { id: 'process', label: 'Methodology' },
 ];
 
 function useProgress() {
@@ -56,7 +50,7 @@ function useProgress() {
   return p;
 }
 
-/** Hairline progress bar — the only persistent sign of the journey's length. */
+/** Hairline progress bar — subtle indication of archival depth. */
 function ProgressBar() {
   const p = useProgress();
   return (
@@ -69,7 +63,7 @@ function ProgressBar() {
   );
 }
 
-/** Chapter rail: scrolls to a station and marks the one in view. */
+/** Chapter rail: quietly guides the visitor along the right edge. */
 function ChapterRail() {
   const active = useActiveAct();
 
@@ -88,15 +82,15 @@ function ChapterRail() {
             className="group flex items-center gap-3"
           >
             <span
-              className={`text-[0.5625rem] uppercase tracking-[0.28em] transition-colors duration-500 ${
-                isActive ? 'text-gold' : 'text-parchment/0 group-hover:text-parchment/60'
+              className={`text-[0.5625rem] uppercase tracking-[0.26em] transition-colors duration-500 ${
+                isActive ? 'text-gold font-medium' : 'text-parchment/0 group-hover:text-parchment/60'
               }`}
             >
               {label}
             </span>
             <span
               className={`block h-px transition-all duration-500 ${
-                isActive ? 'w-8 bg-gold' : 'w-4 bg-parchment/30 group-hover:bg-parchment/60'
+                isActive ? 'w-8 bg-gold' : 'w-4 bg-parchment/25 group-hover:bg-parchment/60'
               }`}
             />
           </button>
@@ -106,110 +100,70 @@ function ChapterRail() {
   );
 }
 
-/**
- * Non-WEBGL path (older hardware, blocked GPU): the same four videos, in the
- * same order, as a plain scrollable sequence. No artwork is invented.
- */
-function StaticJourney() {
-  return (
-    <div className="relative z-10 bg-[#0c0b09]">
-      <section className="px-6 pb-12 pt-32 text-center">
-        <p className="eyebrow mb-5">AI-Assisted Manuscript Restoration</p>
-        <h1 className="mx-auto max-w-3xl font-display text-[clamp(2rem,6vw,3.6rem)] font-medium leading-[1.02] text-parchment">
-          The past is written.
-          <br />
-          <span className="italic text-gold">We&apos;re learning to read it.</span>
-        </h1>
-        <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-parchment/70">
-          Your browser could not open the 3D journey, so the four source films are presented in
-          sequence below.
-        </p>
-      </section>
-      {videoStations.map((s) => (
-        <section
-          key={s.id}
-          id={s.id === 'discovery' ? 'artifact' : s.id}
-          className="border-t border-white/5"
-        >
-          <video
-            src={manuscriptScenes[s.id]}
-            poster={scenePosters[s.id]}
-            controls
-            
-            loop
-            playsInline
-            preload="metadata"
-            className="h-[46vh] w-full bg-black object-cover md:h-[62vh]"
-          />
-          <div className="px-6 py-6">
-            <p className="eyebrow">{s.label}</p>
-          </div>
-        </section>
-      ))}
-      <FinalCtaScene variant="inline" />
-      <Footer />
-    </div>
-  );
-}
-
 export default function Index() {
   useJourneyScroll();
-  const tier = useQualityTier();
-  const [webgl, setWebgl] = useState(true);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    setWebgl(supportsWebGL());
-    const t = window.setTimeout(() => setReady(true), 450);
+    const t = window.setTimeout(() => setReady(true), 350);
     return () => window.clearTimeout(t);
   }, []);
 
-  if (!webgl) return <StaticJourney />;
-
   return (
-    <div className="relative w-full overflow-x-hidden">
+    <div className="relative w-full overflow-x-hidden bg-[#0c0b09]">
       <TopNav />
       <ProgressBar />
       <ChapterRail />
 
-      {/* the continuous 3D world — fixed, behind everything */}
-      {/* <LandingCanvas tier={tier} /> */}
+      {/* Visually flat, stable, grounded archival background video */}
+      <ManuscriptHero3D has3DWorld={false} />
 
-      {/* the acts: full-height sections in normal flow, above the world */}
-      <main className="relative z-10">
-        <ManuscriptHero3D />
+      {/* The Single Unbroken Editorial Sequence — each section appears exactly once */}
+      <main className="relative z-10 main-parallax-content">
+        {/* 1. First Page — Anti-Gravity Upload Workspace & Spatial Analysis Tools */}
+        <HeroScene />
+
+        {/* 2. Second Section — Narrative Introduction & Interactive Restoration Workbench */}
+        <IntroductionScene />
+
+        {/* 3. Act I — The Physical Material & In-Situ Condition */}
         <ArtifactScene />
+
+        {/* 3. Act II — Optical Readability & Stroke Isolation */}
         <RestorationScene />
+
+        {/* 4. Act III — Scribal Traditions & Script Family */}
         <ScriptScene />
+
+        {/* 5. Act IV — Stratified Multi-Spectral Analysis */}
         <AnalysisScene />
+
+        {/* 6. Act V — Character Transcription From Physical Mark */}
         <TranscriptionScene />
+
+        {/* 7. Act V.b — The 5 Epistemic States & Abstention on Gaps */}
         <ReconstructionScene />
-        <UncertaintyScene />
+
+        {/* 8. Act VI — Scholarly Interpretation & Evidence attachment */}
         <InterpretationScene />
+
+        {/* 9. Act VII — Archival Methodology at a Glance */}
         <ProcessScene />
-        <FinalCtaScene />
       </main>
 
-      <div className="relative z-20 bg-[#0c0b09]/92">
+      {/* Footer Colophon */}
+      <div className="relative z-20 bg-[#0c0b09]/95 border-t border-white/5">
         <Footer />
       </div>
 
-      {/* opening veil: hides shader/video warm-up, never a fake loader */}
+      {/* Quiet opening fade-in veil */}
       <div
         className={`pointer-events-none fixed inset-0 z-[60] bg-[#0c0b09] transition-opacity ease-out ${
           ready ? 'opacity-0' : 'opacity-100'
         }`}
-        style={{ transitionDuration: '1200ms' }}
+        style={{ transitionDuration: '800ms' }}
         aria-hidden="true"
-      >
-        <p
-          className={`absolute inset-x-0 bottom-10 text-center text-[0.5625rem] uppercase tracking-[0.34em] text-parchment/50 transition-opacity duration-700 ${
-            ready ? 'opacity-0' : 'opacity-100'
-          }`}
-        >
-          Preparing the archive
-        </p>
-      </div>
+      />
     </div>
   );
 }

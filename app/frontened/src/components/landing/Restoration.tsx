@@ -5,24 +5,23 @@ const stages = [
   {
     key: 'original',
     tag: 'Original',
-    copy: 'The raw leaf as captured. Faded ink, losses and stains remain exactly as found.',
+    copy: 'The leaf as survived. Faded ink, surface stains, and insect fissures remain completely untouched.',
   },
   {
     key: 'enhanced',
     tag: 'Enhanced',
-    copy: 'Readability processing reveals contrast and stroke without inventing marks.',
+    copy: 'Non-destructive spectral contrast isolates ink strokes from substrate grain without inventing phantom marks.',
   },
   {
     key: 'recognized',
     tag: 'Recognized',
-    copy: 'Only what is genuinely visible is transcribed. Everything else stays open.',
+    copy: 'Only strokes with unambiguous physical evidence are transcribed. Everything else remains an open question.',
   },
 ];
 
 /**
- * ACT II — RESTORATION / TRANSFORMATION.
- * The supplied footage carries the transformation; the stages arrive
- * progressively, never as a before/after slider.
+ * ACT II — RESTORATION / READABILITY.
+ * Readability processing reveals contrast and stroke without inventing marks.
  */
 export default function RestorationScene() {
   const { ref, inView } = useSectionReveal<HTMLElement>();
@@ -34,7 +33,11 @@ export default function RestorationScene() {
       className="relative z-20 flex min-h-screen items-center overflow-hidden px-5 py-[16vh] md:px-12 lg:px-20"
       aria-label="Restoration"
     >
-      <div className="scrim-left absolute inset-y-0 left-0 w-[80%] md:w-[62%]" aria-hidden="true" />
+      {/* Smooth soft side scrim - seamless gradient without harsh cutoff edges */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0c0b09]/95 via-[#0c0b09]/75 to-transparent md:w-[70%]"
+        aria-hidden="true"
+      />
 
       <div className={`reveal ${inView ? 'reveal-in' : ''} relative w-full max-w-lg`}>
         <SceneLabel index="II" label="Restoration" />
@@ -43,30 +46,37 @@ export default function RestorationScene() {
           <br />
           <span className="italic text-gold">progressively legible.</span>
         </h2>
-        <ol className="mt-8 space-y-6">
+        <p className="mt-4 text-sm leading-relaxed text-parchment/70">
+          Centuries of humidity, fungus, and handling leave ink faded and fibers abraded.
+          Our restoration process does not repaint or imagine missing strokes; it isolates surviving
+          pigment density so human scholars can read what is actually there.
+        </p>
+
+        <ol className="mt-8 space-y-5">
           {stages.map((s, i) => (
             <li
               key={s.key}
-              className="flex gap-5"
+              className="panel-25d flex gap-4 items-start p-3.5 rounded-sm border border-white/8 bg-[#12100d]/80"
               style={{
                 opacity: inView ? 1 : 0,
-                transform: inView ? 'translateY(0)' : 'translateY(14px)',
-                transition: 'opacity 900ms cubic-bezier(0.25,1,0.5,1), transform 900ms cubic-bezier(0.25,1,0.5,1)',
-                transitionDelay: `${260 + i * 240}ms`,
+                transform: inView ? 'translateY(0)' : 'translateY(12px)',
+                transition: 'opacity 800ms cubic-bezier(0.16,1,0.3,1), transform 800ms cubic-bezier(0.16,1,0.3,1)',
+                transitionDelay: `${200 + i * 200}ms`,
               }}
             >
-              <span className="mt-1 shrink-0 border border-[#c49a5a]/40 px-2.5 py-1 text-[0.5625rem] uppercase tracking-[0.24em] text-gold">
+              <span className="mt-0.5 shrink-0 rounded-sm border border-[#c49a5a]/40 bg-[#c49a5a]/10 px-2.5 py-1 text-[0.5625rem] uppercase tracking-[0.2em] text-gold font-medium">
                 {s.tag}
               </span>
-              <p className="text-[0.8125rem] leading-relaxed text-parchment/72 md:text-sm">
+              <p className="text-[0.8125rem] leading-relaxed text-parchment/75 md:text-sm">
                 {s.copy}
               </p>
             </li>
           ))}
         </ol>
-        <p className="mt-9 max-w-md border-l border-[#526b67]/50 pl-5 font-display text-lg italic leading-snug text-parchment/85">
-          “Restore what can be reliably restored, clearly show uncertainty, and refuse to
-          guess when evidence is insufficient.”
+
+        <p className="mt-8 max-w-md border-l border-[#526b67]/50 pl-4 font-display text-base italic leading-relaxed text-parchment/80">
+          “Restore what can be reliably verified, clearly document every uncertainty,
+          and refuse to invent text when the evidence has turned to dust.”
         </p>
       </div>
     </section>

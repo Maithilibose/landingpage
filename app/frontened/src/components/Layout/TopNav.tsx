@@ -33,7 +33,7 @@ export default function TopNav() {
       }`}
       style={{ paddingTop: 'clamp(10px, 2.6vh, 34px)' }}
     >
-      <div className="mx-auto flex max-w-screen-2xl items-center justify-between px-5 py-3 md:px-10">
+      <div className="parallax-nav mx-auto flex max-w-screen-2xl items-center justify-between px-5 py-3 md:px-10">
         <button
           onClick={() => go('hero')}
           className="group flex items-baseline gap-2 text-left"
