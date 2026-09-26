@@ -1,123 +1,97 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Film, Volume2, VolumeX } from 'lucide-react';
-import { useCinematicTimeline, cinematicStore } from '../../lib/cinematicEngine';
+import { useActiveAct } from '../../lib/acts';
+import { CINEMATIC_TIMELINE } from '../../data/manuscriptScenes';
 
 interface ManuscriptHero3DProps {
   has3DWorld?: boolean;
 }
 
 /**
- * PALIMPSEST — SCROLL-SCRUBBED CINEMATIC HERO
+ * PALIMPSEST — CONTINUOUS AUTONOMOUS CINEMATIC HERO VIDEO
  *
- * Direct physical interaction:
- * - Scroll progress directly scrubs video currentTime.
- * - Stopping scroll FREEZES the video at that exact frame.
- * - Resuming scroll CONTINUES from that exact position.
- * - Reverse scroll REVERSES the video naturally.
- * - Zero autonomous playback.
- * - Subtle damping ensures fluid, jitter-free scrubbing across mouse wheels and trackpads.
- * - Video remains visually flat, stable, and grounded behind document content.
+ * Core Behaviors:
+ * - Plays continuously and independently on its own natural timeline.
+ * - Smoothly loops without interruption.
+ * - Stable, visually grounded archival anchor behind document flow.
+ * - Does NOT respond to mouse or cursor position.
+ * - Does NOT tilt, rotate, zoom, or shift on hover.
+ * - Does NOT pause or change when cursor enters or leaves.
+ * - The authentic manuscript video remains the dominant visual centerpiece.
+ * - Preserves original audio support, starting muted for browser autoplay compliance,
+ *   with live toggle control for scholars.
  */
 export default function ManuscriptHero3D({ has3DWorld = false }: ManuscriptHero3DProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
 
+  const activeAct = useActiveAct();
+  const currentBeat = CINEMATIC_TIMELINE[activeAct] || CINEMATIC_TIMELINE.hero;
+
+  // Start continuous autonomous playback on mount
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = isMuted;
+    video.loop = true;
+
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch(() => {
+          // In case browser requires explicit muted autoplay
+          video.muted = true;
+          setIsMuted(true);
+          video.play().then(() => setIsPlaying(true)).catch(() => {});
+        });
+    }
+
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
+
+    video.addEventListener('play', onPlay);
+    video.addEventListener('pause', onPause);
+
+    return () => {
+      video.removeEventListener('play', onPlay);
+      video.removeEventListener('pause', onPause);
+    };
+  }, [isMuted]);
+
+  // Toggle video audio
   const toggleSound = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     const video = videoRef.current;
     if (!video) return;
-    const next = !isMuted;
-    video.muted = next;
-    setIsMuted(next);
+
+    const nextMuted = !isMuted;
+    video.muted = nextMuted;
+    setIsMuted(nextMuted);
+
+    if (!nextMuted) {
+      video.play().catch(() => {});
+    }
   }, [isMuted]);
-
-  const { currentAct, currentBeat, targetVideoTime, sectionProgress, isScrolling } = useCinematicTimeline();
-
-  const currentScrubTimeRef = useRef(0);
-  const targetTimeRef = useRef(targetVideoTime);
-  targetTimeRef.current = targetVideoTime;
-
-  // Reduced motion check
-  const checkReducedMotion = () => {
-    if (typeof window === 'undefined') return false;
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  };
-
-  // Video initial pause and ready handling
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.pause();
-    video.muted = true;
-
-    const onCanPlay = () => {
-      setIsLoaded(true);
-      video.pause();
-      const initialTarget = cinematicStore.targetVideoTime;
-      currentScrubTimeRef.current = initialTarget;
-      video.currentTime = initialTarget;
-    };
-
-    video.addEventListener('canplay', onCanPlay, { once: true });
-
-    return () => {
-      video.removeEventListener('canplay', onCanPlay);
-    };
-  }, []);
-
-  // Continuous 60fps damped scrub loop
-  useEffect(() => {
-    let rafId: number;
-
-    const scrubLoop = () => {
-      const video = videoRef.current;
-      if (video) {
-        const target = targetTimeRef.current;
-        const current = currentScrubTimeRef.current;
-        const diff = target - current;
-
-        // If reduced motion is requested, snap directly
-        if (checkReducedMotion()) {
-          if (Math.abs(video.currentTime - target) > 0.05) {
-            video.currentTime = target;
-            currentScrubTimeRef.current = target;
-          }
-        } else if (Math.abs(diff) > 0.001) {
-          // Smooth interpolation damping factor (0.24 = responsive yet butter-smooth)
-          const next = current + diff * 0.24;
-          currentScrubTimeRef.current = next;
-
-          // Only apply seek if change is perceptible (~1/60th second)
-          if (Math.abs(video.currentTime - next) > 0.018) {
-            video.currentTime = next;
-          }
-        }
-      }
-
-      rafId = requestAnimationFrame(scrubLoop);
-    };
-
-    rafId = requestAnimationFrame(scrubLoop);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
 
   return (
     <>
       {/* Persistent, Visually Flat, Grounded Archival Manuscript Background (Fixed Behind Content) */}
       <div className="manuscript-hero" aria-hidden="true">
-        {/* Flat, Stable Video Layer playing Ancient Manuscript to Digital.mp4 */}
+        {/* Flat, Stable Video Layer playing Ancient Manuscript to Digital.mp4 continuously */}
         <div className="hero-depth hero-video-layer">
           <video
             ref={videoRef}
-            className="hero-video transition-opacity duration-300"
+            className="hero-video transition-opacity duration-500"
+            autoPlay
+            loop
+            muted
             playsInline
             preload="auto"
-            muted
             poster="/videos/manuscript-poster.jpg"
           >
             <source
@@ -143,9 +117,9 @@ export default function ManuscriptHero3D({ has3DWorld = false }: ManuscriptHero3
         </div>
       </div>
 
-      {/* Floating Bottom Archival Controls: Original Audio & Live Scrub Indicator */}
+      {/* Floating Bottom Archival Controls: Original Audio & Live Chapter Indicator */}
       <div className="fixed bottom-6 left-6 z-40 flex items-center gap-3">
-        {/* Audio Toggle */}
+        {/* Original Sound Toggle */}
         <button
           type="button"
           onClick={toggleSound}
@@ -169,24 +143,20 @@ export default function ManuscriptHero3D({ has3DWorld = false }: ManuscriptHero3
             </div>
           )}
           <span className="text-[0.625rem] font-medium tracking-[0.16em] uppercase">
-            {isMuted ? 'Sound: Muted' : 'Sound: Active'}
+            {isMuted ? 'Original Sound: Muted' : 'Original Sound: Active'}
           </span>
         </button>
 
-        {/* Live Scrub Chapter Status */}
+        {/* Live Archival Chapter Status Pill */}
         <div
           aria-live="polite"
-          className="flex items-center gap-2 rounded-full border border-white/10 bg-[#0d0c0a]/85 px-4 py-2 backdrop-blur-md text-[0.625rem] tracking-[0.16em] uppercase text-parchment/60 shadow-xl transition-all duration-300"
+          className="hidden sm:flex items-center gap-2 rounded-full border border-white/10 bg-[#0d0c0a]/85 px-4 py-2 backdrop-blur-md text-[0.625rem] tracking-[0.16em] uppercase text-parchment/60 shadow-xl transition-all duration-300"
         >
           <Film className="h-3.5 w-3.5 text-gold/80" />
           <span className="text-gold font-medium">{currentBeat.label}</span>
           <span className="text-parchment/40">·</span>
-          <span className="text-parchment/80 tabular-nums">
-            {targetVideoTime.toFixed(1)}s
-          </span>
-          <span className="text-parchment/40">·</span>
-          <span className={`italic transition-colors duration-200 ${isScrolling ? 'text-gold' : 'text-parchment/40'}`}>
-            {isScrolling ? 'Scrubbing' : 'Stationary'}
+          <span className="italic text-parchment/50">
+            Cinematic Stream
           </span>
         </div>
       </div>
