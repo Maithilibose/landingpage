@@ -1,0 +1,1137 @@
+/* ==========================================================================
+   Vellum.Node Home Page Stylesheet
+   Approved Stitch Design: Subtle Atmospheric Ink & Archival Telemetry
+   Scoped via CSS Modules to prevent any style leakage to other routes
+   ========================================================================== */
+
+.homeRoot {
+  --vn-bg-canvas: #0A0F1A;
+  --vn-bg-surface: #111827;
+  --vn-bg-panel: #162032;
+  --vn-bg-card: #141D2D;
+  --vn-text-primary: #F8FAFC;
+  --vn-text-secondary: #94A3B8;
+  --vn-text-muted: #64748B;
+  --vn-accent-gold: #C8A66A;
+  --vn-accent-gold-soft: rgba(200, 166, 106, 0.12);
+  --vn-accent-gold-border: rgba(200, 166, 106, 0.28);
+  --vn-accent-cyan: #32B8D4;
+  --vn-accent-cyan-soft: rgba(50, 184, 212, 0.12);
+  --vn-accent-cyan-border: rgba(50, 184, 212, 0.3);
+  --vn-border: rgba(148, 163, 184, 0.12);
+  --vn-border-gold: rgba(200, 166, 106, 0.2);
+
+  background-color: var(--vn-bg-canvas);
+  color: var(--vn-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+.homeRoot *,
+.homeRoot *::before,
+.homeRoot *::after {
+  box-sizing: border-box;
+}
+
+.homeRoot a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ==================== ATMOSPHERIC INK BACKGROUND ==================== */
+.atmosphericInk {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.inkWash {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+/* ==================== CONTAINER & COMMON LAYOUT ==================== */
+.container {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.section {
+  padding: 6.5rem 0;
+  border-bottom: 1px solid var(--vn-border);
+  position: relative;
+  z-index: 1;
+}
+
+.sectionHeader {
+  margin-bottom: 3.5rem;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--vn-accent-gold);
+  margin-bottom: 1rem;
+}
+
+.kickerDot {
+  width: 5px;
+  height: 5px;
+  background-color: var(--vn-accent-gold);
+  display: inline-block;
+}
+
+.sectionTitle {
+  font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  font-size: clamp(2rem, 3.8vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--vn-text-primary);
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.01em;
+}
+
+.sectionLead {
+  font-size: 1.05rem;
+  color: var(--vn-text-secondary);
+  max-width: 720px;
+  margin: 0;
+  line-height: 1.7;
+}
+
+/* ==================== CTAs & BUTTONS ==================== */
+.ctaGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.85rem;
+  background-color: var(--vn-accent-gold);
+  color: #0A0F1A;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(200, 166, 106, 0.2);
+}
+
+.btnPrimary:hover {
+  background-color: #D8BA82;
+  transform: translateY(-1px);
+}
+
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.85rem;
+  background-color: transparent;
+  color: var(--vn-text-primary);
+  border: 1px solid var(--vn-accent-gold-border);
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.btnSecondary:hover {
+  border-color: var(--vn-accent-gold);
+  background-color: var(--vn-accent-gold-soft);
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   01 — HERO SECTION
+   ========================================================================== */
+.heroSection {
+  padding: 5rem 0 6.5rem 0;
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid var(--vn-border);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+@media (max-width: 1024px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.heroLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.heroEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--vn-accent-gold-border);
+  background-color: var(--vn-accent-gold-soft);
+  color: var(--vn-accent-gold);
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  margin-bottom: 1.5rem;
+  width: fit-content;
+}
+
+.heroTitle {
+  font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-weight: 400;
+  line-height: 1.08;
+  color: var(--vn-text-primary);
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.heroBody {
+  font-size: 1.1rem;
+  color: var(--vn-text-secondary);
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 0 1.25rem 0;
+}
+
+.heroMicrocopy {
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--vn-accent-gold);
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+}
+
+/* Hero Inspection Console */
+.heroConsole {
+  background-color: var(--vn-bg-surface);
+  border: 1px solid var(--vn-border);
+  border-radius: 4px;
+  padding: 1rem;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+.consoleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--vn-border);
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  color: var(--vn-text-secondary);
+}
+
+.consoleStatusActive {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--vn-accent-cyan);
+}
+
+.cyanPulseDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--vn-accent-cyan);
+  box-shadow: 0 0 8px var(--vn-accent-cyan);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.6; transform: scale(0.95); }
+}
+
+.consoleMount {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: radial-gradient(circle at 50% 50%, #161D29 0%, #0D121B 100%);
+  border: 1px solid var(--vn-border);
+  overflow: hidden;
+}
+
+/* Corner registration marks */
+.bracketTL, .bracketTR, .bracketBL, .bracketBR {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--vn-accent-cyan);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 10;
+}
+.bracketTL { top: 12px; left: 12px; border-width: 2px 0 0 2px; }
+.bracketTR { top: 12px; right: 12px; border-width: 2px 2px 0 0; }
+.bracketBL { bottom: 12px; left: 12px; border-width: 0 0 2px 2px; }
+.bracketBR { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; }
+
+/* Laser scanner */
+.scanLaser {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background-color: var(--vn-accent-cyan);
+  box-shadow: 0 0 10px var(--vn-accent-cyan), 0 0 20px rgba(50, 184, 212, 0.4);
+  z-index: 5;
+  animation: scanMotion 4.5s ease-in-out infinite;
+}
+
+@keyframes scanMotion {
+  0% { top: 4%; opacity: 0.2; }
+  15% { opacity: 0.9; }
+  85% { opacity: 0.9; }
+  100% { top: 96%; opacity: 0.2; }
+}
+
+.scanLaserLabel {
+  position: absolute;
+  top: -18px;
+  right: 14px;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--vn-accent-cyan);
+  background: rgba(10, 15, 26, 0.9);
+  padding: 2px 6px;
+  border: 1px solid var(--vn-accent-cyan-border);
+  text-transform: uppercase;
+}
+
+/* Inspection bounding box */
+.inspectionRegion {
+  position: absolute;
+  top: 30%;
+  left: 28%;
+  width: 44%;
+  height: 36%;
+  border: 1px dashed var(--vn-accent-cyan);
+  background-color: rgba(50, 184, 212, 0.05);
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.regionTag {
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--vn-accent-cyan);
+  text-transform: uppercase;
+}
+
+/* Specimen simulated texture */
+.specimenCanvas {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.specimenMockLines {
+  width: 82%;
+  height: 76%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  opacity: 0.65;
+}
+
+.mockLine {
+  height: 2px;
+  background-color: rgba(200, 166, 106, 0.35);
+  border-radius: 1px;
+}
+
+.mockLineDegraded {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(200, 166, 106, 0.4) 0px,
+    rgba(200, 166, 106, 0.4) 18px,
+    transparent 18px,
+    transparent 32px
+  );
+}
+
+.consoleFooter {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--vn-border);
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 10px;
+}
+
+.consoleField {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fieldLabel {
+  color: var(--vn-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.fieldValue {
+  color: var(--vn-text-primary);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   02 — PROBLEM + PROCESS
+   ========================================================================== */
+.problemGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .problemGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.specimenCard {
+  background-color: var(--vn-bg-surface);
+  border: 1px solid var(--vn-border);
+  border-radius: 4px;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.specimenFrame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: radial-gradient(circle at 40% 40%, #1A2333 0%, #0E131E 100%);
+  border: 1px solid var(--vn-border);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calloutList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.calloutBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--vn-bg-panel);
+  border: 1px solid var(--vn-border);
+  border-radius: 2px;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--vn-text-secondary);
+  text-transform: uppercase;
+}
+
+.calloutDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--vn-accent-gold);
+}
+
+.problemCopy {
+  margin-bottom: 3rem;
+}
+
+.problemParagraph {
+  font-size: 1.05rem;
+  color: var(--vn-text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+
+/* Connected Visual Pipeline Flow */
+.pipelineFlow {
+  position: relative;
+  margin-top: 2rem;
+  padding: 1.75rem;
+  background-color: var(--vn-bg-surface);
+  border: 1px solid var(--vn-border);
+  border-radius: 4px;
+}
+
+.pipelineFlowHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--vn-border);
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  color: var(--vn-accent-gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pipelineStepsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .pipelineStepsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.pipelineStepNode {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.stepNodeHead {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.stepNumber {
+  width: 26px;
+  height: 26px;
+  border-radius: 2px;
+  background-color: var(--vn-accent-gold-soft);
+  border: 1px solid var(--vn-accent-gold-border);
+  color: var(--vn-accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.stepTitle {
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--vn-text-primary);
+  text-transform: uppercase;
+}
+
+.stepText {
+  font-size: 0.85rem;
+  color: var(--vn-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.pipelineConnector {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--vn-border);
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--vn-accent-cyan);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ==========================================================================
+   03 — BEFORE / AFTER RESTORATION
+   ========================================================================== */
+.examinationDesk {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .examinationDesk {
+    grid-template-columns: 1fr;
+  }
+}
+
+.deskSliderWrap {
+  background-color: var(--vn-bg-surface);
+  border: 1px solid var(--vn-border);
+  border-radius: 4px;
+  padding: 1.25rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.deskSliderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.deskCaption {
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--vn-text-muted);
+  text-align: center;
+  margin-top: 0.75rem;
+  text-transform: uppercase;
+}
+
+/* Evidence Telemetry Panel */
+.evidencePanel {
+  background-color: var(--vn-bg-surface);
+  border: 1px solid var(--vn-border);
+  border-radius: 4px;
+  padding: 1.75rem;
+}
+
+.evidenceHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--vn-border);
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  color: var(--vn-accent-gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.matrixRows {
+  margin: 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.matrixRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+  font-size: 0.85rem;
+}
+
+.matrixLabel {
+  color: var(--vn-text-muted);
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.matrixValue {
+  color: var(--vn-text-primary);
+  font-weight: 500;
+  text-align: right;
+  max-width: 60%;
+}
+
+.evidenceNote {
+  padding: 1rem;
+  background-color: var(--vn-bg-panel);
+  border-left: 2px solid var(--vn-accent-gold);
+  font-size: 0.85rem;
+  color: var(--vn-text-secondary);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   04 — TECHNOLOGY + EVIDENCE
+   ========================================================================== */
+.capabilityGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem;
+  margin-bottom: 3.5rem;
+}
+
+@media (max-width: 768px) {
+  .capabilityGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.capabilityCard {
+  background-color: var(--vn-bg-surface);
+  border: 1px solid var(--vn-border);
+  border-radius: 4px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color 0.2s ease;
+}
+
+.capabilityCard:hover {
+  border-color: var(--vn-accent-gold-border);
+}
+
+.capabilityTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.capabilityNumber {
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  color: var(--vn-accent-gold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.capabilityMotif {
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 10px;
+  color: var(--vn-accent-cyan);
+  padding: 2px 6px;
+  background-color: var(--vn-accent-cyan-soft);
+  border: 1px solid var(--vn-accent-cyan-border);
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.capabilityTitle {
+  font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 500;
+  color: var(--vn-text-primary);
+  margin: 0 0 0.75rem 0;
+}
+
+.capabilityDesc {
+  font-size: 0.95rem;
+  color: var(--vn-text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Evidence States Block */
+.evidenceStatesBox {
+  background-color: var(--vn-bg-surface);
+  border: 1px solid var(--vn-border);
+  border-radius: 4px;
+  padding: 2.25rem;
+}
+
+.evidenceStatesHeader {
+  margin-bottom: 1.75rem;
+}
+
+.statesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .statesGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stateCard {
+  background-color: var(--vn-bg-panel);
+  border: 1px solid var(--vn-border);
+  border-radius: 3px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stateTagSupported {
+  color: #38BDF8;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.stateTagUncertain {
+  color: var(--vn-accent-gold);
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.stateTagInsufficient {
+  color: #F87171;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.stateDescription {
+  font-size: 0.9rem;
+  color: var(--vn-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ==========================================================================
+   05 — ARCHIVE + LANGUAGE + RESEARCH
+   ========================================================================== */
+.archiveCardsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+@media (max-width: 1024px) {
+  .archiveCardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .archiveCardsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.archiveCard {
+  background-color: var(--vn-bg-surface);
+  border: 1px solid var(--vn-border);
+  border-radius: 4px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.archiveCard:hover {
+  transform: translateY(-2px);
+  border-color: var(--vn-accent-gold-border);
+}
+
+.cardAccession {
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 10px;
+  color: var(--vn-accent-gold);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5rem;
+}
+
+.cardTitle {
+  font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--vn-text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.cardDescription {
+  font-size: 0.85rem;
+  color: var(--vn-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.cardMetaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.08);
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 10px;
+}
+
+.cardMetaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cardMetaLabel {
+  color: var(--vn-text-muted);
+  text-transform: uppercase;
+}
+
+.cardMetaVal {
+  color: var(--vn-text-primary);
+}
+
+/* Language Focus Gallery */
+.languageGallerySection {
+  margin-bottom: 3.5rem;
+  padding: 2.5rem;
+  background-color: var(--vn-bg-surface);
+  border: 1px solid var(--vn-border);
+  border-radius: 4px;
+}
+
+.galleryHeader {
+  margin-bottom: 1.5rem;
+}
+
+.gallerySubtitle {
+  font-size: 0.95rem;
+  color: var(--vn-text-secondary);
+  max-width: 800px;
+  line-height: 1.7;
+}
+
+.languageNodesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .languageNodesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .languageNodesGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.languageNode {
+  background-color: var(--vn-bg-panel);
+  border: 1px solid var(--vn-border);
+  border-radius: 3px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease;
+}
+
+.languageNode:hover {
+  border-color: var(--vn-accent-gold-border);
+}
+
+.glyphSpecimen {
+  font-size: 1.75rem;
+  color: var(--vn-accent-gold);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.languageName {
+  font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  font-size: 1.35rem;
+  color: var(--vn-text-primary);
+  margin: 0 0 0.25rem 0;
+}
+
+.languageTradition {
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 10px;
+  color: var(--vn-accent-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.languageMaterial {
+  font-size: 0.8rem;
+  color: var(--vn-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Research Dossier Card */
+.dossierCard {
+  background: linear-gradient(135deg, rgba(22, 32, 50, 0.6) 0%, rgba(17, 24, 39, 0.8) 100%);
+  border: 1px solid var(--vn-accent-gold-border);
+  border-radius: 4px;
+  padding: 2.5rem;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .dossierCard {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dossierFields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  background-color: rgba(10, 15, 26, 0.6);
+  padding: 1.25rem;
+  border: 1px solid var(--vn-border);
+  border-radius: 3px;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 10px;
+}
+
+.dossierField {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ==========================================================================
+   06 — FINAL CTA
+   ========================================================================== */
+.finalCtaSection {
+  padding: 6.5rem 0 8rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+.cinematicFrame {
+  position: relative;
+  background: radial-gradient(circle at 50% 50%, rgba(22, 32, 50, 0.8) 0%, rgba(10, 15, 26, 0.95) 100%);
+  border: 1px solid var(--vn-accent-gold-border);
+  border-radius: 4px;
+  padding: 4.5rem 2rem;
+  text-align: center;
+  max-width: 960px;
+  margin: 0 auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+
+.rulerTickTop {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--vn-accent-gold) 0px,
+    var(--vn-accent-gold) 1px,
+    transparent 1px,
+    transparent 16px
+  );
+  opacity: 0.4;
+}
+
+.rulerTickBottom {
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--vn-accent-gold) 0px,
+    var(--vn-accent-gold) 1px,
+    transparent 1px,
+    transparent 16px
+  );
+  opacity: 0.4;
+}
+
+.finalTitle {
+  font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+  font-weight: 400;
+  color: var(--vn-text-primary);
+  margin: 0 0 1rem 0;
+}
+
+.finalBody {
+  font-size: 1.1rem;
+  color: var(--vn-text-secondary);
+  max-width: 600px;
+  margin: 0 auto 2rem auto;
+  line-height: 1.7;
+}
+
+.finalButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.finalClosing {
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--vn-accent-gold);
+  text-transform: uppercase;
+  margin: 0;
+}

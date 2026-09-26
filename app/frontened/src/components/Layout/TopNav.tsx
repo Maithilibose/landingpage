@@ -1,15 +1,16 @@
 import { Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { goToSection } from '../../lib/scrollStore';
 
 const links = [
-  { id: 'artifact', label: 'Artifact' },
-  { id: 'restoration', label: 'Restoration' },
-  { id: 'analysis', label: 'Analysis' },
-  { id: 'interpretation', label: 'Interpretation' },
+  { id: 'artifact', label: 'ARTIFACT' },
+  { id: 'restoration', label: 'RESTORATION' },
+  { id: 'analysis', label: 'ANALYSIS' },
+  { id: 'interpretation', label: 'INTERPRETATION' },
 ];
 
-/** Minimal navigation that stays out of the footage's way. */
+/** Minimal navigation that stays out of the footage's way and connects to the SIH application. */
 export default function TopNav() {
   const [open, setOpen] = useState(false);
   const [solid, setSolid] = useState(false);
@@ -42,12 +43,12 @@ export default function TopNav() {
           <span className="font-display text-lg tracking-[0.28em] text-parchment md:text-xl">
             PALIMPSEST
           </span>
-          <span className="hidden text-[0.5625rem] uppercase tracking-[0.3em] text-gold/70 sm:inline">
-            Manuscript Restoration
+          <span className="hidden text-[0.5625rem] uppercase tracking-[0.28em] text-gold/75 sm:inline">
+            MANUSCRIPT RESTORATION
           </span>
         </button>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-6 lg:gap-8 md:flex" aria-label="Primary">
           {links.map((l) => (
             <button
               key={l.id}
@@ -57,12 +58,27 @@ export default function TopNav() {
               {l.label}
             </button>
           ))}
-          <button
-            onClick={() => go('artifact')}
-            className="border border-[#c49a5a]/55 px-4 py-2 text-[0.6875rem] uppercase tracking-[0.24em] text-gold transition-colors hover:bg-[#c49a5a] hover:text-[#171410]"
+
+          <Link
+            to="/explore"
+            className="text-xs uppercase tracking-[0.22em] text-parchment/85 transition-colors hover:text-gold"
           >
-            Inspect Artifact
-          </button>
+            ARCHIVE
+          </Link>
+
+          <Link
+            to="/about"
+            className="text-xs uppercase tracking-[0.22em] text-parchment/85 transition-colors hover:text-gold"
+          >
+            MAP
+          </Link>
+
+          <Link
+            to="/app"
+            className="border border-[#c49a5a] bg-[#c49a5a] px-4 py-2 text-[0.6875rem] uppercase tracking-[0.24em] text-[#171410] font-medium transition-all hover:bg-[#d8b071] shadow-[0_2px_12px_rgba(196,154,90,0.25)]"
+          >
+            Enter Workspace →
+          </Link>
         </nav>
 
         <button
@@ -85,12 +101,30 @@ export default function TopNav() {
               {l.label}
             </button>
           ))}
-          <button
-            onClick={() => go('artifact')}
-            className="mt-3 w-full border border-[#c49a5a]/55 px-4 py-3 text-xs uppercase tracking-[0.24em] text-gold"
+
+          <Link
+            to="/explore"
+            onClick={() => setOpen(false)}
+            className="block w-full py-3 text-left text-sm uppercase tracking-[0.22em] text-parchment/80"
           >
-            Inspect Artifact
-          </button>
+            ARCHIVE
+          </Link>
+
+          <Link
+            to="/about"
+            onClick={() => setOpen(false)}
+            className="block w-full py-3 text-left text-sm uppercase tracking-[0.22em] text-parchment/80"
+          >
+            REGIONAL MAP
+          </Link>
+
+          <Link
+            to="/app"
+            onClick={() => setOpen(false)}
+            className="mt-3 block w-full text-center border border-[#c49a5a] bg-[#c49a5a] px-4 py-3 text-xs uppercase tracking-[0.24em] text-[#171410] font-semibold"
+          >
+            Enter Workspace →
+          </Link>
         </nav>
       )}
     </header>

@@ -3,7 +3,6 @@ import ManuscriptHero3D from '../components/landing/ManuscriptHero3D';
 import AnalysisScene from '../components/landing/AnalysisScene';
 import ArtifactScene from '../components/landing/ArtifactScene';
 import HeroScene from '../components/landing/HeroScene';
-import IntroductionScene from '../components/landing/IntroductionScene';
 import InterpretationScene from '../components/landing/InterpretationScene';
 import ProcessScene from '../components/landing/ProcessScene';
 import ReconstructionScene from '../components/landing/ReconstructionScene';
@@ -20,6 +19,7 @@ import {
   scrollStore,
   useJourneyScroll,
 } from '../lib/scrollStore';
+import { useCinematicScrollDriver } from '../lib/cinematicEngine';
 
 /**
  * PALIMPSEST — ARCHIVAL MANUSCRIPT RESTORATION
@@ -32,8 +32,7 @@ import {
  */
 
 const rail: { id: ActId; label: string }[] = [
-  { id: 'hero', label: 'Upload' },
-  { id: 'introduction', label: 'Manuscript' },
+  { id: 'hero', label: 'Workbench' },
   { id: 'artifact', label: 'Artifact' },
   { id: 'restoration', label: 'Restoration' },
   { id: 'script', label: 'Script' },
@@ -102,6 +101,7 @@ function ChapterRail() {
 
 export default function Index() {
   useJourneyScroll();
+  useCinematicScrollDriver();
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -120,13 +120,10 @@ export default function Index() {
 
       {/* The Single Unbroken Editorial Sequence — each section appears exactly once */}
       <main className="relative z-10 main-parallax-content">
-        {/* 1. First Page — Anti-Gravity Upload Workspace & Spatial Analysis Tools */}
+        {/* 1. First Page — Palimpsest Manuscript Restoration Front Page & Workbench */}
         <HeroScene />
 
-        {/* 2. Second Section — Narrative Introduction & Interactive Restoration Workbench */}
-        <IntroductionScene />
-
-        {/* 3. Act I — The Physical Material & In-Situ Condition */}
+        {/* 2. Act I — The Physical Material & In-Situ Condition */}
         <ArtifactScene />
 
         {/* 3. Act II — Optical Readability & Stroke Isolation */}

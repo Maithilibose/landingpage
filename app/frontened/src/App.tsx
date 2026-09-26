@@ -6,33 +6,48 @@ import BlogRoutes from './blog-routes';
 import Index from './pages/Index';
 import AuthCallback from './pages/AuthCallback';
 import AuthError from './pages/AuthError';
-// MODULE_IMPORTS_START
-// MODULE_IMPORTS_END
+import RestorePage from './pages/sih/RestorePage';
+import ExplorePage from './pages/sih/ExplorePage';
+import ExploreArchivePage from './pages/sih/ExploreArchivePage';
+import AboutPage from './pages/sih/AboutPage';
+import ResourcesPage from './pages/sih/ResourcesPage';
 
 const queryClient = new QueryClient();
 
 const AppRoutes = () => (
   <Routes>
+    {/* 1. Primary Landing Page — Cinematic Editorial Manuscript Restoration */}
     <Route path="/" element={<Index />} />
-    {/* <Route path="/blog/*" element={<BlogRoutes />} /> */}
+
+    {/* 2. SIH 06 Main Functional Application & Restoration Desk */}
+    <Route path="/app" element={<RestorePage />} />
+    <Route path="/restore" element={<RestorePage />} />
+
+    {/* 3. SIH 06 Living Archive & Manuscript Catalogue */}
+    <Route path="/explore" element={<ExplorePage />} />
+    <Route path="/explore/archive" element={<ExploreArchivePage />} />
+
+    {/* 4. SIH 06 Regional Manuscript Heritage & Interactive India Map */}
+    <Route path="/about" element={<AboutPage />} />
+
+    {/* 5. SIH 06 Archival Resources & Paleographic References */}
+    <Route path="/resources" element={<ResourcesPage />} />
+
+    {/* Blog & Auth */}
+    <Route path="/blog/*" element={<BlogRoutes />} />
     <Route path="/auth/callback" element={<AuthCallback />} />
     <Route path="/auth/error" element={<AuthError />} />
-    {/* MODULE_ROUTES_START */}
-    {/* MODULE_ROUTES_END */}
   </Routes>
 );
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    {/* MODULE_PROVIDERS_START */}
-    {/* MODULE_PROVIDERS_END */}
     <TooltipProvider>
       <Toaster />
       <BrowserRouter>
         <AppRoutes />
       </BrowserRouter>
     </TooltipProvider>
-    {/* MODULE_PROVIDERS_CLOSE */}
   </QueryClientProvider>
 );
 

@@ -1,18 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { cinematicStore } from './cinematicEngine';
 
 /**
  * The journey is a sequence of full-height acts laid over ONE continuous,
- * fixed 3D world. Acts live in normal document flow (so the page is always
- * readable and never depends on a scroll position to exist), while the same
- * normalised scroll progress drives the camera through the corridor of videos.
+ * fixed cinematic archival world. Acts live in normal document flow (so the page is always
+ * readable and never depends on a scroll position to exist), while the hybrid
+ * scroll-triggered cinematic engine drives the film through the corridor of chapters.
  *
- * Each act reveals itself as it enters the viewport, with a timed fallback so
- * content can never remain hidden if observers do not fire.
+ * Each act reveals itself as it enters the viewport with editorial easing.
  */
 
 export const actIds = [
   'hero',
-  'introduction',
   'artifact',
   'restoration',
   'script',
@@ -27,63 +26,56 @@ export const actIds = [
 
 export type ActId = (typeof actIds)[number];
 
-/** Reveal-on-enter for an act. `delay` is a safety net, not a loader. */
-export function useSectionReveal<T extends HTMLElement = HTMLElement>(delay = 900) {
+/** Reveal-on-enter for an act with graceful reverse transition support. */
+export function useSectionReveal<T extends HTMLElement = HTMLElement>(_delay?: number) {
   const [inView, setInView] = useState(false);
+  const elementRef = useRef<T | null>(null);
 
   useEffect(() => {
     if (typeof IntersectionObserver === 'undefined') {
       setInView(true);
       return;
     }
-    const timer = window.setTimeout(() => setInView(true), delay);
-    return () => window.clearTimeout(timer);
-  }, [delay]);
 
-  const ref = (el: T | null) => {
-    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const el = elementRef.current;
+    if (!el) return;
+
     const io = new IntersectionObserver(
       (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setInView(true);
-          io.disconnect();
-        }
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setInView(true);
+          } else if (entry.boundingClientRect.top > window.innerHeight * 0.4) {
+            // When user scrolls back up above the section, reset inView gracefully
+            setInView(false);
+          }
+        });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -6% 0px' },
+      { threshold: 0.15, rootMargin: '0px 0px -10% 0px' },
     );
+
     io.observe(el);
+
+    return () => {
+      io.disconnect();
+    };
+  }, []);
+
+  const ref = (el: T | null) => {
+    elementRef.current = el;
   };
 
   return { ref, inView };
 }
 
-/** Which act currently owns the viewport — drives the chapter rail. */
+/** Which act currently owns the viewport — driven by the central cinematic engine. */
 export function useActiveAct(): ActId {
-  const [active, setActive] = useState<ActId>('hero');
+  const [active, setActive] = useState<ActId>(() => cinematicStore.getState().currentAct);
 
   useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') return;
-    const ratios = new Map<string, number>();
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => ratios.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0));
-        let best = '';
-        let bestRatio = 0.24;
-        ratios.forEach((v, k) => {
-          if (v > bestRatio) {
-            bestRatio = v;
-            best = k;
-          }
-        });
-        if (best) setActive(best as ActId);
-      },
-      { threshold: [0.25, 0.5, 0.75] },
-    );
-    actIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) io.observe(el);
+    return cinematicStore.subscribe((state) => {
+      setActive(state.currentAct);
     });
-    return () => io.disconnect();
   }, []);
 
   return active;

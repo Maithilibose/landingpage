@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint --quiet ./src",
+    "lint": "eslint --quiet ./app/frontened/src",
     "preview": "vite preview",
     "postinstall": "echo 'Dependencies installed successfully'"
   },
@@ -41,6 +41,7 @@
     "@radix-ui/react-toggle-group": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.4",
     "@react-three/fiber": "8.17.10",
+    "@svg-maps/india": "^2.0.0",
     "@tanstack/react-query": "^5.56.2",
     "axios": "1.6.0",
     "class-variance-authority": "^0.7.1",
@@ -48,6 +49,7 @@
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.3.0",
+    "framer-motion": "^13.4.4",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.462.0",
     "markdown-to-jsx": "^9.7.13",
