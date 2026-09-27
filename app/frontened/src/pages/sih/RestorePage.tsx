@@ -1,5 +1,5 @@
 
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   ArrowRight,
   Camera,
@@ -25,10 +25,14 @@ import {
 
 import "../../styles/sih/restore.css";
 import "../../styles/sih/sih-theme.css";
+import { PIPELINE_STEPS } from "../../data/homeContent";
 
 type CameraState = "idle" | "active" | "error";
 
 export default function RestorePage() {
+  const [searchParams] = useSearchParams();
+  const previewRestoreRef = useRef<HTMLDivElement | null>(null);
+
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -45,6 +49,31 @@ export default function RestorePage() {
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
+
+  /* -------------------------------------------------------
+     AUTOMATIC ENHANCEMENT SECTION POSITIONING
+  ------------------------------------------------------- */
+
+  useEffect(() => {
+    const stage = searchParams.get("stage");
+    if (stage === "enhancement" || window.location.hash === "#preview-restore") {
+      const scrollTarget = () => {
+        if (previewRestoreRef.current) {
+          previewRestoreRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+          previewRestoreRef.current.focus({ preventScroll: true });
+        }
+      };
+
+      const rafId = requestAnimationFrame(() => {
+        scrollTarget();
+      });
+
+      return () => cancelAnimationFrame(rafId);
+    }
+  }, [searchParams]);
 
   /* -------------------------------------------------------
      CLEANUP
@@ -568,33 +597,28 @@ export default function RestorePage() {
         />
 
         <div className="process-grid">
-          <ProcessCard
-            number="01"
-            title="Capture"
-            text="Digitize the manuscript using an uploaded scan or camera capture."
-            icon={<Camera size={18} />}
-          />
+          {PIPELINE_STEPS.map((step) => {
+            const icon =
+              step.iconName === "camera" ? (
+                <Camera size={18} />
+              ) : step.iconName === "scan" ? (
+                <ScanLine size={18} />
+              ) : step.iconName === "sparkles" ? (
+                <Sparkles size={18} />
+              ) : (
+                <FileText size={18} />
+              );
 
-          <ProcessCard
-            number="02"
-            title="Detect"
-            text="Identify text, noise, fading, damage and important visual regions."
-            icon={<ScanLine size={18} />}
-          />
-
-          <ProcessCard
-            number="03"
-            title="Restore"
-            text="Enhance contrast, clarity and legibility while respecting the original."
-            icon={<Sparkles size={18} />}
-          />
-
-          <ProcessCard
-            number="04"
-            title="Understand"
-            text="Review the restored image alongside OCR and supporting metadata."
-            icon={<FileText size={18} />}
-          />
+            return (
+              <ProcessCard
+                key={step.number}
+                number={step.number}
+                title={step.title}
+                text={step.text}
+                icon={icon}
+              />
+            );
+          })}
         </div>
       </section>
 
@@ -769,7 +793,12 @@ export default function RestorePage() {
 
           {/* RESULT */}
 
-          <div className="workspace-panel">
+          <div
+            className="workspace-panel"
+            id="preview-restore"
+            ref={previewRestoreRef}
+            tabIndex={-1}
+          >
             <div className="panel-title">
               <span>02</span>
               PREVIEW & RESTORE

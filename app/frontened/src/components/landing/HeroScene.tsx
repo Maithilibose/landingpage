@@ -437,10 +437,10 @@ export default function HeroScene() {
                 </button>
 
                 <Link
-                  to="/app"
+                  to="/app?stage=enhancement#preview-restore"
                   className="flex items-center gap-1.5 px-3 py-1 text-[0.625rem] uppercase tracking-[0.2em] rounded-sm transition-colors border border-gold/50 text-gold hover:bg-gold hover:text-[#171410] font-medium"
                 >
-                  <span>LIVE WORKSPACE →</span>
+                  <span>MANUSCRIPT ENHANCEMENT →</span>
                 </Link>
               </div>
             </div>

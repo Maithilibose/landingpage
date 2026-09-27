@@ -20,6 +20,8 @@ export interface PipelineStep {
   title: string;
   description: string;
   text: string;
+  iconName: "camera" | "scan" | "sparkles" | "file-text";
+  narrativeState?: string;
 }
 
 export interface MethodologyPillar {
@@ -76,30 +78,38 @@ export const PIPELINE_STEPS: PipelineStep[] = [
   {
     step: "01",
     number: "01",
-    title: "CAPTURE",
-    description: "Digitize a manuscript using an uploaded scan or camera capture.",
-    text: "Digitize a manuscript using an uploaded scan or camera capture.",
+    title: "Capture",
+    description: "Digitize the manuscript using an uploaded scan or camera capture.",
+    text: "Digitize the manuscript using an uploaded scan or camera capture.",
+    iconName: "camera",
+    narrativeState: "Physical Folio",
   },
   {
     step: "02",
     number: "02",
-    title: "DETECT",
+    title: "Detect",
     description: "Identify text, noise, fading, damage and important visual regions.",
     text: "Identify text, noise, fading, damage and important visual regions.",
+    iconName: "scan",
+    narrativeState: "Feature Isolation",
   },
   {
     step: "03",
     number: "03",
-    title: "RESTORE",
+    title: "Restore",
     description: "Enhance contrast, clarity and legibility while respecting the original.",
     text: "Enhance contrast, clarity and legibility while respecting the original.",
+    iconName: "sparkles",
+    narrativeState: "Legibility Recovery",
   },
   {
     step: "04",
     number: "04",
-    title: "UNDERSTAND",
-    description: "Review restored output alongside OCR/extracted text and supporting metadata.",
-    text: "Review restored output alongside OCR/extracted text and supporting metadata.",
+    title: "Understand",
+    description: "Review the restored image alongside OCR and supporting metadata.",
+    text: "Review the restored image alongside OCR and supporting metadata.",
+    iconName: "file-text",
+    narrativeState: "Digital Knowledge",
   },
 ];
 
