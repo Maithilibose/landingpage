@@ -1058,6 +1058,95 @@ button {
   opacity: 0.9;
 }
 
+.india-state.state-in-region {
+  fill: #223a4e;
+  stroke: rgba(228, 201, 153, 0.7);
+  stroke-width: 1.3;
+}
+
+.india-state.state-outside-region {
+  opacity: 0.45;
+  fill: #101c27;
+  stroke: rgba(141, 119, 87, 0.35);
+}
+
+.india-state.state-outside-region:hover {
+  opacity: 0.9;
+  fill: #244052;
+  stroke: var(--blue);
+}
+
+.map-region-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.region-tab-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 2px;
+  border: 1px solid rgba(212, 175, 114, 0.22);
+  background: rgba(10, 18, 26, 0.75);
+  color: rgba(247, 243, 234, 0.75);
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.region-tab-pill:hover {
+  border-color: rgba(212, 175, 114, 0.55);
+  color: var(--parchment, #f7f3ea);
+  background: rgba(18, 30, 42, 0.9);
+}
+
+.region-tab-pill.active {
+  border-color: var(--gold-light, #e4c999);
+  background: rgba(212, 175, 114, 0.16);
+  color: var(--gold-light, #e4c999);
+  box-shadow: 0 0 14px rgba(212, 175, 114, 0.22);
+  font-weight: 500;
+}
+
+.region-tab-pill .pill-num {
+  font-size: 9px;
+  opacity: 0.65;
+  color: var(--gold);
+}
+
+.story-card-state-context {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(212, 175, 114, 0.15);
+}
+
+.story-card-state-context .state-folio-tag {
+  display: block;
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--gold-light);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.story-card-state-context p {
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+  color: #8397a6 !important;
+}
+
+#regional-map {
+  scroll-margin-top: 30px;
+}
+
 
 /* =========================================
    TOOLTIP

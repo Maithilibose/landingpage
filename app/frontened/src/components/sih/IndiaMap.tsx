@@ -1,10 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import India from "@svg-maps/india";
 
 import { stateStories } from "@/data/states";
+import {
+  REGIONS,
+  getRegionById,
+  getRegionForState,
+  type RegionId,
+} from "@/data/regions";
 
 function normalizeStateName(name: string) {
   return name
@@ -205,15 +211,34 @@ function findStateKey(
   return null;
 }
 
-export default function IndiaMap() {
-  const [selectedState, setSelectedState] =
-    useState("odisha");
+interface IndiaMapProps {
+  initialRegion?: string | null;
+}
+
+export default function IndiaMap({ initialRegion }: IndiaMapProps = {}) {
+  const initialReg = getRegionById(initialRegion);
+  const [activeRegion, setActiveRegion] = useState<RegionId>(
+    initialRegion ? initialReg.id : "east"
+  );
+  const [selectedState, setSelectedState] = useState<string>(
+    initialRegion ? initialReg.defaultState : "odisha"
+  );
 
   const [hoveredState, setHoveredState] =
     useState<string | null>(null);
 
   const [isChanging, setIsChanging] =
     useState(false);
+
+  useEffect(() => {
+    if (initialRegion) {
+      const reg = getRegionById(initialRegion);
+      setActiveRegion(reg.id);
+      setSelectedState(reg.defaultState);
+    }
+  }, [initialRegion]);
+
+  const activeRegionInfo = getRegionById(activeRegion);
 
   /*
    * Safety fallback:
@@ -245,10 +270,27 @@ export default function IndiaMap() {
       return;
     }
 
+    // Automatically sync active region if selected state belongs to another region
+    const stateRegion = getRegionForState(stateKey);
+    if (stateRegion.id !== activeRegion) {
+      setActiveRegion(stateRegion.id);
+    }
+
     setIsChanging(true);
 
     window.setTimeout(() => {
       setSelectedState(stateKey);
+      setIsChanging(false);
+    }, 220);
+  }
+
+  function handleSelectRegion(regionId: RegionId) {
+    if (regionId === activeRegion) return;
+    const reg = getRegionById(regionId);
+    setActiveRegion(regionId);
+    setIsChanging(true);
+    window.setTimeout(() => {
+      setSelectedState(reg.defaultState);
       setIsChanging(false);
     }, 220);
   }
@@ -263,7 +305,7 @@ export default function IndiaMap() {
       <div className="map-info">
 
         <div className="map-info-label">
-          SELECTED REGION
+          SELECTED REGION · {activeRegionInfo.name}
         </div>
 
 
@@ -478,7 +520,7 @@ export default function IndiaMap() {
         <AnimatePresence mode="wait">
 
           <motion.div
-            key={`${selectedState}-story`}
+            key={`${activeRegion}-story`}
             className="story-card"
             initial={{
               opacity: 0,
@@ -501,7 +543,7 @@ export default function IndiaMap() {
             <div className="story-card-top">
 
               <div className="story-card-label">
-                MANUSCRIPT STORY
+                REGIONAL KNOWLEDGE · {activeRegionInfo.name}
               </div>
 
               <div className="story-card-symbol">
@@ -511,13 +553,21 @@ export default function IndiaMap() {
             </div>
 
             <h4>
-              The knowledge of{" "}
-              {selected.name}
+              {activeRegionInfo.knowledgeTitle}
             </h4>
 
             <p>
-              {selected.story}
+              {activeRegionInfo.story}
             </p>
+
+            <div className="story-card-state-context">
+              <span className="state-folio-tag">
+                STATE FOLIO CONTEXT · {selected.name}
+              </span>
+              <p>
+                {selected.story}
+              </p>
+            </div>
 
             <button type="button">
               Explore Collection
@@ -540,13 +590,36 @@ export default function IndiaMap() {
         <div className="map-label">
 
           <span>
-            01
+            {activeRegionInfo.number}
           </span>
 
           <span>
-            INDIA · MANUSCRIPT REGIONS
+            INDIA · {activeRegionInfo.name} MANUSCRIPT REGION
           </span>
 
+        </div>
+
+        {/* =====================================
+            FOUR BROAD REGIONS NAV
+        ===================================== */}
+
+        <div className="map-region-nav" role="tablist" aria-label="Manuscript regions of India">
+          {REGIONS.map((r) => {
+            const isActive = activeRegion === r.id;
+            return (
+              <button
+                key={r.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => handleSelectRegion(r.id)}
+                className={`region-tab-pill ${isActive ? "active" : ""}`}
+              >
+                <span className="pill-num">{r.number}</span>
+                <span>{r.name}</span>
+              </button>
+            );
+          })}
         </div>
 
 
@@ -663,6 +736,11 @@ export default function IndiaMap() {
                   stateKey ===
                   selectedState;
 
+                const isInActiveRegion =
+                  stateKey
+                    ? activeRegionInfo.stateKeys.includes(stateKey)
+                    : false;
+
                 return (
                   <motion.path
                     key={location.id}
@@ -670,6 +748,14 @@ export default function IndiaMap() {
                     className={`india-state ${
                       isSelected
                         ? "state-selected"
+                        : ""
+                    } ${
+                      isInActiveRegion && !isSelected
+                        ? "state-in-region"
+                        : ""
+                    } ${
+                      !isInActiveRegion && !isSelected
+                        ? "state-outside-region"
                         : ""
                     } ${
                       stateKey
@@ -680,7 +766,9 @@ export default function IndiaMap() {
                       opacity:
                         isSelected
                           ? 1
-                          : 0.82,
+                          : isInActiveRegion
+                          ? 0.95
+                          : 0.45,
                     }}
                     transition={{
                       duration: 0.3,
@@ -768,7 +856,7 @@ export default function IndiaMap() {
 
           <span className="instruction-dot" />
 
-          SELECT A REGION TO EXPLORE
+          ACTIVE: {activeRegionInfo.name} REGION · HOVER OR CLICK ANY STATE TO EXAMINE
 
         </div>
 

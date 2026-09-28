@@ -29,6 +29,7 @@ const AppRoutes = () => (
 
     {/* 4. SIH 06 Regional Manuscript Heritage & Interactive India Map */}
     <Route path="/about" element={<AboutPage />} />
+    <Route path="/map" element={<AboutPage />} />
 
     {/* 5. SIH 06 Archival Resources & Paleographic References */}
     <Route path="/resources" element={<ResourcesPage />} />

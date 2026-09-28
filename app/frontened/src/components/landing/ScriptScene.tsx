@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import { useSectionReveal } from '../../lib/acts';
+import { REGIONS } from '../../data/regions';
 import ConfidenceBadge from '../common/ConfidenceBadge';
 import SceneLabel from './SceneLabel';
 
@@ -18,8 +20,6 @@ const supported = [
     confidence: 87,
   },
 ];
-
-const planned = ['Bengali', 'Sanskrit (Devanagari / Sharada)', 'Tamil', 'Malayalam'];
 
 /**
  * ACT III — SCRIPT IDENTIFICATION.
@@ -70,22 +70,50 @@ export default function ScriptScene() {
           ))}
         </div>
 
-        <div className="mt-6">
-          <p className="eyebrow mb-2.5 text-parchment/60">
-            Active Archival Research
+        {/* Four Broad Regional Traditions Exploration */}
+        <div className="mt-7 pt-5 border-t border-white/10">
+          <div className="flex items-center justify-between mb-2">
+            <p className="eyebrow text-parchment/70 tracking-[0.22em] text-[0.625rem] uppercase font-mono">
+              REGIONAL SCRIPT TRADITIONS
+            </p>
+            <span className="text-[0.5625rem] uppercase tracking-[0.2em] text-gold/60 font-mono">
+              4 REGIONS
+            </span>
+          </div>
+
+          <p className="text-xs leading-relaxed text-parchment/65 mb-3.5">
+            Before exploring individual manuscripts and scripts, we can understand them through India’s broader regional manuscript traditions:
           </p>
-          <div className="flex flex-wrap gap-2">
-            {planned.map((p) => (
-              <span
-                key={p}
-                className="rounded-sm border border-white/10 bg-white/5 px-2.5 py-1 text-[0.625rem] uppercase tracking-[0.16em] text-parchment/60"
+
+          <div className="grid grid-cols-2 gap-2.5">
+            {REGIONS.map((r) => (
+              <Link
+                key={r.id}
+                to={`/about?region=${r.id}#regional-map`}
+                className="group panel flex flex-col justify-between p-3 rounded-sm border border-white/10 bg-[#12100d]/85 hover:border-gold/50 hover:bg-[#171410] transition-all duration-300"
               >
-                {p}
-              </span>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-mono text-[0.5625rem] text-gold/70 group-hover:text-gold font-medium tracking-wider">
+                    {r.number}
+                  </span>
+                  <span className="text-[0.6875rem] text-gold/40 group-hover:text-gold group-hover:translate-x-0.5 transition-all">
+                    →
+                  </span>
+                </div>
+                <div>
+                  <h4 className="text-xs font-medium tracking-[0.22em] text-parchment uppercase group-hover:text-gold transition-colors">
+                    {r.name}
+                  </h4>
+                  <p className="text-[0.625rem] text-parchment/50 tracking-wider mt-0.5 font-mono truncate">
+                    {r.keyScripts.slice(0, 2).join(' · ')}
+                  </p>
+                </div>
+              </Link>
             ))}
           </div>
-          <p className="mt-3 text-[0.625rem] tracking-[0.16em] uppercase text-muted-foreground">
-            Corpus benchmarks tested against catalogued physical manuscripts.
+
+          <p className="mt-3 text-[0.625rem] tracking-[0.16em] uppercase text-muted-foreground font-mono">
+            Explore regional scribal traditions and manuscript heritage on the interactive map.
           </p>
         </div>
       </div>

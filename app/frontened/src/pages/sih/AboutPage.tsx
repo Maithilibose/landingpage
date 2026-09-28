@@ -1,7 +1,8 @@
+import { useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import IndiaMap from "../../components/sih/IndiaMap";
 import Navbar from "../../components/sih/Navbar";
 import "../../styles/sih/sih-theme.css";
-import { Link } from "react-router-dom";
 
 const PRINCIPLES = [
   {
@@ -22,6 +23,20 @@ const PRINCIPLES = [
 ];
 
 export default function AboutPage() {
+  const [searchParams] = useSearchParams();
+  const regionParam = searchParams.get("region");
+
+  useEffect(() => {
+    if (regionParam || window.location.hash === "#regional-map") {
+      const el = document.getElementById("regional-map");
+      if (el) {
+        requestAnimationFrame(() => {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+    }
+  }, [regionParam]);
+
   return (
     <main className="vellum-page about-page">
       <Navbar />
@@ -189,7 +204,7 @@ export default function AboutPage() {
           03 — INDIA'S MANUSCRIPT LANDSCAPE
       ===================================================== */}
 
-      <section className="about-regional-map">
+      <section className="about-regional-map" id="regional-map">
 
         <div className="page-container">
 
@@ -226,7 +241,7 @@ export default function AboutPage() {
 
 
           <div className="about-map-frame">
-            <IndiaMap />
+            <IndiaMap initialRegion={regionParam} />
           </div>
 
 
