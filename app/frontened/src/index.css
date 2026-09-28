@@ -1,0 +1,999 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  AI-ASSISTED HISTORICAL MANUSCRIPT RESTORATION PLATFORM
+
+  Palette: warm parchment foundation, ink-black world, oxblood / terracotta /
+  aged gold / restrained teal as controlled accents.
+*/
+
+@layer base {
+
+  :root {
+
+    /* brand primitives */
+
+    --parchment: #f4efe4;
+
+    --ink: #211e1a;
+
+    --oxblood: #4a2525;
+
+    --terracotta: #8a5a44;
+
+    --gold: #c49a5a;
+
+    --teal: #526b67;
+
+    /* shadcn tokens -> dark archaeological archive surface */
+
+    --background: 36 11% 8%;
+
+    --foreground: 45 33% 92%;
+
+    --card: 36 10% 11%;
+
+    --card-foreground: 45 33% 92%;
+
+    --popover: 36 11% 9%;
+
+    --popover-foreground: 45 33% 92%;
+
+    --primary: 36 40% 62%;
+
+    --primary-foreground: 36 12% 9%;
+
+    --secondary: 36 8% 17%;
+
+    --secondary-foreground: 45 25% 88%;
+
+    --muted: 36 8% 16%;
+
+    --muted-foreground: 40 16% 74%;
+
+    --accent: 168 13% 24%;
+
+    --accent-foreground: 45 30% 92%;
+
+    --destructive: 0 33% 32%;
+
+    --destructive-foreground: 45 33% 94%;
+
+    --border: 36 9% 21%;
+
+    --input: 36 9% 23%;
+
+    --ring: 36 40% 62%;
+
+    --radius: 0.125rem;
+
+    --sidebar-background: 36 11% 9%;
+
+    --sidebar-foreground: 45 25% 88%;
+
+    --sidebar-primary: 36 40% 62%;
+
+    --sidebar-primary-foreground: 36 12% 9%;
+
+    --sidebar-accent: 36 8% 17%;
+
+    --sidebar-border: 36 9% 21%;
+
+    --sidebar-ring: 36 40% 62%;
+
+  }
+
+  html {
+
+    scroll-behavior: smooth;
+
+    background: hsl(var(--background));
+
+    -webkit-text-size-adjust: 100%;
+
+  }
+
+  body {
+
+    background: hsl(var(--background));
+
+    color: hsl(var(--foreground));
+
+    font-family: system-ui, -apple-system, sans-serif;
+
+    font-kerning: normal;
+
+    text-wrap: pretty;
+
+    overflow-x: hidden;
+
+    letter-spacing: 0.01em;
+
+  }
+
+  h1,
+
+  h2,
+
+  h3 {
+
+    font-family: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
+
+    text-wrap: balance;
+
+  }
+
+  ::selection {
+
+    background: rgba(196, 154, 90, 0.32);
+
+    color: var(--parchment);
+
+  }
+
+}
+
+@layer utilities {
+
+  .font-display {
+
+    font-family: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
+
+  }
+
+  .font-odia {
+
+    font-family: 'Noto Serif Oriya', 'Noto Serif Odia', serif;
+
+  }
+
+  .font-urdu {
+
+    font-family: 'Noto Nastaliq Urdu', serif;
+
+  }
+
+  .text-parchment {
+
+    color: var(--parchment);
+
+  }
+
+  .text-gold {
+
+    color: var(--gold);
+
+  }
+
+  .text-teal-muted {
+
+    color: var(--teal);
+
+  }
+
+  .bg-ink {
+
+    background-color: var(--ink);
+
+  }
+
+  /* hairline rules read as archive index lines, not as UI chrome */
+
+  .rule-gold {
+
+    background: linear-gradient(
+
+      90deg,
+
+      rgba(196, 154, 90, 0) 0%,
+
+      rgba(196, 154, 90, 0.55) 22%,
+
+      rgba(196, 154, 90, 0.55) 78%,
+
+      rgba(196, 154, 90, 0) 100%
+
+    );
+
+  }
+
+  .eyebrow {
+
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+
+      'Segoe UI', sans-serif;
+
+    font-size: 0.6875rem;
+
+    line-height: 1.2;
+
+    letter-spacing: 0.34em;
+
+    text-transform: uppercase;
+
+    color: rgba(216, 176, 112, 0.96);
+
+  }
+
+  /* cinematic legibility over footage without covering the manuscript */
+
+  .scrim-bottom {
+
+    background: linear-gradient(
+
+      to top,
+
+      rgba(14, 12, 10, 0.94) 0%,
+
+      rgba(14, 12, 10, 0.7) 42%,
+
+      rgba(14, 12, 10, 0.28) 78%,
+
+      rgba(14, 12, 10, 0) 100%
+
+    );
+
+  }
+
+  .scrim-left {
+
+    background: linear-gradient(
+
+      100deg,
+
+      rgba(14, 12, 10, 0.92) 0%,
+
+      rgba(14, 12, 10, 0.58) 38%,
+
+      rgba(14, 12, 10, 0.18) 66%,
+
+      rgba(14, 12, 10, 0) 100%
+
+    );
+
+  }
+
+  .panel {
+
+    background: rgba(20, 18, 15, 0.86);
+
+    border: 1px solid rgba(196, 154, 90, 0.26);
+
+    backdrop-filter: blur(7px);
+
+  }
+
+  /* Legibility floor: copy sits over live footage, so the two smallest text
+
+     steps are lifted globally instead of per-section. Declared after the
+
+     Tailwind utilities, so it wins on source order. */
+
+  .text-xs {
+
+    font-size: 0.8125rem;
+
+    line-height: 1.55;
+
+  }
+
+  .text-sm {
+
+    font-size: 0.9375rem;
+
+    line-height: 1.7;
+
+  }
+
+  .vignette::after {
+
+    content: '';
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background: radial-gradient(
+
+      120% 90% at 50% 45%,
+
+      rgba(0, 0, 0, 0) 45%,
+
+      rgba(10, 9, 8, 0.55) 100%
+
+    );
+
+  }
+
+}
+
+/* film letterbox bars + light sweep used by the scene transitions */
+
+.cine-bar {
+
+  position: fixed;
+
+  left: 0;
+
+  right: 0;
+
+  height: clamp(18px, 3.2vh, 42px);
+
+  background: #0d0c0a;
+
+  z-index: 40;
+
+  pointer-events: none;
+
+  transition: opacity 900ms cubic-bezier(0.25, 1, 0.5, 1);
+
+}
+
+.cine-bar-top {
+
+  top: 0;
+
+}
+
+.cine-bar-bottom {
+
+  bottom: 0;
+
+}
+
+@keyframes sweep-across {
+
+  0% {
+
+    transform: translateX(-120%) skewX(-8deg);
+
+    opacity: 0;
+
+  }
+
+  35% {
+
+    opacity: 0.9;
+
+  }
+
+  100% {
+
+    transform: translateX(120%) skewX(-8deg);
+
+    opacity: 0;
+
+  }
+
+}
+
+@keyframes scan-down {
+
+  0% {
+
+    transform: translateY(-100%);
+
+    opacity: 0;
+
+  }
+
+  20% {
+
+    opacity: 1;
+
+  }
+
+  100% {
+
+    transform: translateY(320%);
+
+    opacity: 0;
+
+  }
+
+}
+
+@keyframes drift-fade {
+
+  0%,
+
+  100% {
+
+    opacity: 0.35;
+
+  }
+
+  50% {
+
+    opacity: 0.85;
+
+  }
+
+}
+
+@keyframes dash-flow {
+
+  to {
+
+    stroke-dashoffset: -240;
+
+  }
+
+}
+
+.reveal {
+
+  opacity: 0;
+
+  transform: translateY(14px);
+
+  transition:
+
+    opacity 1000ms cubic-bezier(0.16, 1, 0.3, 1),
+
+    transform 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+
+}
+
+.reveal-in {
+
+  opacity: 1;
+
+  transform: translateY(0);
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+
+    scroll-behavior: auto;
+
+  }
+
+  .reveal {
+
+    opacity: 1;
+
+    transform: none;
+
+    transition: none;
+
+  }
+
+  .cine-bar {
+
+    opacity: 0;
+
+  }
+
+}
+
+
+/* ============================================================
+   MANUSCRIPT 3D / MOUSE PARALLAX HERO
+   ============================================================ */
+
+/*
+  This section is NEW.
+
+  It does not modify the existing design system above.
+
+  The hero is built as layered 2.5D depth:
+  
+  BACKGROUND
+      ↓
+  VIDEO
+      ↓
+  ATMOSPHERE
+      ↓
+  FOREGROUND
+      ↓
+  TEXT / UI
+*/
+
+
+.manuscript-hero {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #0c0b09;
+  z-index: 0;
+  pointer-events: none;
+  isolation: isolate;
+}
+
+/* ------------------------------------------------------------
+   GROUNDED BACKGROUND LAYERS (FLAT, STABLE, CLEAN)
+   ------------------------------------------------------------ */
+
+.hero-depth {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Background overlay layer */
+.hero-depth-back {
+  z-index: 2;
+}
+
+/* Background video layer */
+.hero-video-layer {
+  z-index: 1;
+}
+
+/* Atmosphere layer */
+.hero-atmosphere {
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Foreground atmospheric container */
+.hero-foreground {
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------
+   STABLE FOREGROUND CONTENT & UI
+   All components remain grounded and stable on scroll.
+   ------------------------------------------------------------ */
+
+.parallax-btn,
+.parallax-nav,
+button.parallax-btn,
+.hero-audio-toggle,
+.top-nav-btn,
+.parallax-headline,
+.hero-headline,
+h1.font-display,
+.hero-content h1,
+.parallax-copy,
+.hero-copy,
+.main-parallax-content h2,
+.main-parallax-content h3,
+.main-parallax-content > section > div > p,
+.panel,
+.parallax-mid,
+.evidence-card,
+.abstention-card,
+.parallax-deco,
+.confidence-badge,
+.scene-label,
+.rule-gold,
+.parallax-eyebrow,
+.eyebrow {
+  transform: none;
+}
+
+/* ------------------------------------------------------------
+   SUBTLE 2.5D HOVER FOR ALL OTHER SECTIONS (ACTS II–VII)
+   Restrained, grounded physical depth:
+   - 5–8px upward lift (translate3d)
+   - subtle Z-depth shift
+   - little or no rotation (0° to preserve legibility)
+   - soft diffused archival shadow
+   - smooth easing without any layout shifts
+   ------------------------------------------------------------ */
+
+.panel,
+.panel-25d,
+.evidence-card,
+.abstention-card,
+.interactive-tile,
+.stage-card {
+  position: relative;
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 400ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 300ms ease,
+              background-color 300ms ease;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  box-shadow: 0 4px 14px -3px rgba(10, 8, 6, 0.30), 0 10px 24px -6px rgba(10, 8, 6, 0.20);
+}
+
+.panel:hover,
+.panel-25d:hover,
+.evidence-card:hover,
+.abstention-card:hover,
+.interactive-tile:hover,
+.stage-card:hover {
+  transform: translate3d(0, -6px, 10px);
+  box-shadow: 0 8px 22px -4px rgba(10, 8, 6, 0.44), 0 20px 40px -6px rgba(10, 8, 6, 0.30), 0 0 1px rgba(196, 154, 90, 0.32);
+  border-color: rgba(196, 154, 90, 0.45);
+}
+
+/* Text readability enhancements over luminous manuscript footage */
+h1, h2, h3, .font-display, .hero-content h1 {
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.90), 0 1px 4px rgba(0, 0, 0, 0.98);
+}
+
+.eyebrow {
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.95);
+}
+
+/* ------------------------------------------------------------
+   VIDEO — LUMINOUS ARCHIVAL MANUSCRIPT (56% OPACITY)
+   Framing and aspect-ratio tuned to cleanly crop watermark & credits
+   outside the viewport, while rendering with sharp hardware contrast.
+   ------------------------------------------------------------ */
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 30% 20%;
+  transform: scale(1.22) translateZ(0);
+  transform-origin: 12% 16%;
+  display: block;
+  opacity: 0.76;
+  filter: brightness(0.98) contrast(1.08) saturate(1.06);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* ------------------------------------------------------------
+   SUBTLE FLOATING TOOLS (HERO / ARCHIVAL ANALYSIS ENVIRONMENT)
+   Gentle floating motion, subtle depth, calm editorial feeling.
+   Slow, gentle, imperceptible idle breathing (4–6px amplitude).
+   ------------------------------------------------------------ */
+
+@keyframes tool-float-slow-1 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes tool-float-slow-2 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@keyframes tool-float-slow-3 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes tool-float-slow-4 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.floating-tool-1 {
+  animation: tool-float-slow-1 8.2s ease-in-out infinite;
+}
+
+.floating-tool-2 {
+  animation: tool-float-slow-2 9.4s ease-in-out infinite;
+}
+
+.floating-tool-3 {
+  animation: tool-float-slow-3 8.8s ease-in-out infinite;
+}
+
+.floating-tool-4 {
+  animation: tool-float-slow-4 10.2s ease-in-out infinite;
+}
+
+/* ------------------------------------------------------------
+   LIGHTER CINEMATIC VIGNETTE & SCRIM
+   Preserves vibrant manuscript warmth while feathering edges.
+   ------------------------------------------------------------ */
+
+.hero-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 95% 85% at 50% 50%,
+      rgba(12, 11, 9, 0.02) 0%,
+      rgba(12, 11, 9, 0.22) 60%,
+      rgba(12, 11, 9, 0.72) 100%
+    );
+  pointer-events: none;
+}
+
+.hero-cinematic-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12, 11, 9, 0.28) 0%,
+      rgba(12, 11, 9, 0.04) 30%,
+      rgba(12, 11, 9, 0.08) 70%,
+      rgba(12, 11, 9, 0.48) 100%
+    );
+  pointer-events: none;
+}
+
+.hero-audio-toggle {
+  pointer-events: auto !important;
+}
+
+
+/* ------------------------------------------------------------
+   ATMOSPHERIC LIGHT
+   ------------------------------------------------------------ */
+
+.hero-light {
+
+  position: absolute;
+
+  width: 55%;
+  height: 55%;
+
+  top: 5%;
+  right: 5%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(196, 154, 90, 0.14),
+      transparent 70%
+    );
+
+  filter: blur(30px);
+
+}
+
+
+/* ------------------------------------------------------------
+   SUBTLE DIGITAL GRID (DISABLED TO ENSURE PRISTINE UNINTERRUPTED VIDEO)
+   ------------------------------------------------------------ */
+
+.hero-grid {
+  display: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   HERO CONTENT
+   ------------------------------------------------------------ */
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  width: min(680px, 90%);
+  padding-top: 20vh;
+  margin-left: 8vw;
+  transform: none;
+}
+
+
+/* Small heading above the main title */
+
+.hero-eyebrow {
+
+  margin-bottom: 20px;
+
+  font-size: 11px;
+
+  letter-spacing: 0.3em;
+
+  text-transform: uppercase;
+
+  color: rgba(216, 176, 112, 0.95);
+
+}
+
+
+/* Main hero heading */
+
+.hero-content h1 {
+
+  margin: 0;
+
+  font-family:
+    "Cormorant Garamond",
+    "Iowan Old Style",
+    Georgia,
+    serif;
+
+  font-size: clamp(3.5rem, 7vw, 7rem);
+
+  line-height: 0.9;
+
+  font-weight: 500;
+
+  color: #f4efe4;
+
+}
+
+
+/* Hero description */
+
+.hero-description {
+
+  max-width: 520px;
+
+  margin-top: 30px;
+
+  font-size: 1rem;
+
+  line-height: 1.7;
+
+  color: rgba(244, 239, 228, 0.72);
+
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE / SMALL SCREENS
+   ------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+
+  .manuscript-hero {
+
+    min-height: 650px;
+
+  }
+
+  .hero-content {
+
+    width: 88%;
+
+    margin-left: 6vw;
+
+    padding-top: 25vh;
+
+  }
+
+  .hero-content h1 {
+
+    font-size: clamp(3rem, 13vw, 5rem);
+
+  }
+
+  .hero-depth,
+  .main-parallax-content,
+  .panel,
+  .parallax-mid,
+  .evidence-card,
+  .abstention-card,
+  .confidence-badge,
+  .scene-label,
+  .parallax-deco,
+  .rule-gold,
+  .parallax-btn,
+  .parallax-nav,
+  .parallax-headline,
+  .parallax-copy,
+  .parallax-eyebrow,
+  .eyebrow,
+  h1.font-display {
+    transform: none !important;
+    will-change: auto !important;
+  }
+
+  .hero-video-layer {
+    transform: none !important;
+  }
+
+  .hero-video {
+    opacity: 0.70 !important;
+  }
+}
+
+@media (pointer: coarse) {
+  .hero-depth,
+  .main-parallax-content,
+  .panel,
+  .parallax-mid,
+  .evidence-card,
+  .abstention-card,
+  .confidence-badge,
+  .scene-label,
+  .parallax-deco,
+  .rule-gold,
+  .parallax-btn,
+  .parallax-nav,
+  .parallax-headline,
+  .parallax-copy,
+  .parallax-eyebrow,
+  .eyebrow,
+  h1.font-display,
+  .panel-25d,
+  .interactive-tile,
+  .stage-card {
+    transform: none !important;
+    will-change: auto !important;
+  }
+
+  .panel:hover,
+  .panel-25d:hover,
+  .evidence-card:hover,
+  .abstention-card:hover,
+  .interactive-tile:hover,
+  .stage-card:hover {
+    transform: none !important;
+  }
+
+  .hero-video-layer {
+    transform: none !important;
+  }
+
+  .hero-video {
+    opacity: 0.70 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-depth,
+  .hero-content,
+  .main-parallax-content,
+  .panel,
+  .panel-25d,
+  .interactive-tile,
+  .stage-card,
+  .parallax-mid,
+  .evidence-card,
+  .abstention-card,
+  .confidence-badge,
+  .scene-label,
+  .parallax-deco,
+  .rule-gold,
+  .parallax-btn,
+  .parallax-nav,
+  .parallax-headline,
+  .parallax-copy,
+  .parallax-eyebrow,
+  .eyebrow,
+  h1.font-display,
+  .floating-tool-1,
+  .floating-tool-2,
+  .floating-tool-3,
+  .floating-tool-4 {
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+}
+
+@keyframes cameraScan {
+  0% {
+    top: 10%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 90%;
+    opacity: 0;
+  }
+}
